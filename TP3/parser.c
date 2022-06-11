@@ -57,10 +57,11 @@ int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 	int cant;
 	if (pFile != NULL && pArrayListPassenger != NULL)
 	{
-		while(!feof(pFile))
+		do
 		{
-			cant=fread(&this, sizeof(this), 1,pFile);
-			if(cant!=1)
+			this = Passenger_new();
+			cant=fread(this, sizeof(this), 1,pFile);
+			/*if(cant!=1)
 			{
 				if(feof(pFile))
 				{
@@ -72,11 +73,10 @@ int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 				}
 			}
 			else
-			{
-				printf("ID%d|Apellido%s|CodVuelo%s\n",this->id,this->apellido,this->codigoVuelo);
+			{*/
 				ll_add(pArrayListPassenger, this);
-			}
-		}
+			//}
+		}while(!feof(pFile));
 		retorno=0;
 	}
 

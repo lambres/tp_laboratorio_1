@@ -48,21 +48,15 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger)
 	int retorno = -1;
 	if(path != NULL && pArrayListPassenger != NULL)
 	{
-		if(ll_len(pArrayListPassenger)>0)
+		FILE* pFile=fopen("data.dat","rb");
+		if(parser_PassengerFromBinary(pFile, pArrayListPassenger)==1)
 		{
-			puts("Archivo cargado previamente");
+			printf("No se pudo cargar el archivo en controller\n");
 		}
-		else
-		{
-			FILE* pFile=fopen("data.dat","rb");
-			if(parser_PassengerFromBinary(pFile, pArrayListPassenger)==1)
-			{
-				printf("No se pudo cargar el archivo en controller\n");
-			}
-			retorno = 0;
-			fclose(pFile);
-		}
+		retorno = 0;
+		fclose(pFile);
 	}
+
     return retorno;
 }
 
@@ -348,20 +342,18 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListPassenger)
 	Passenger* this = NULL;
 	if (path != NULL && pArrayListPassenger != NULL)
 	{
+		int cantidad = ll_len(pArrayListPassenger);
 		pArchivo = fopen(path,"wb");
 		if (pArchivo != NULL)
 		{
-			int cantidad = ll_len(pArrayListPassenger);
 			for (i=0; i< cantidad; i++)
 			{
-				this = (Passenger*) ll_get(pArrayListPassenger, i);
+				this =  ll_get(pArrayListPassenger, i);//(Passenger*)
 				fwrite(this, sizeof(Passenger),1,pArchivo);
 			}
 		}
-		if(!fclose(pArchivo))
-		{
-			retorno = 0;
-		}
+		fclose(pArchivo);
+		retorno=0;
 	}
 	return retorno;
 }
