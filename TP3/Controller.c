@@ -348,8 +348,18 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListPassenger)
 		{
 			for (i=0; i< cantidad; i++)
 			{
-				this =  ll_get(pArrayListPassenger, i);//(Passenger*)
-				fwrite(this, sizeof(Passenger),1,pArchivo);
+				this =(Passenger*)ll_get(pArrayListPassenger, i);
+				if(this !=NULL)
+				{
+					if(fwrite((Passenger*)this, sizeof(Passenger),1,pArchivo)!=1)
+					{
+						this=NULL;
+						free(this);
+						printf("Error escribiendo binario\n");
+						break;
+					}
+
+				}
 			}
 		}
 		fclose(pArchivo);

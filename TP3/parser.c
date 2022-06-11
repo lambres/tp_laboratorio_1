@@ -52,34 +52,29 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
  */
 int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 {
-	int retorno = 1;
-	Passenger* this;
-	int cant;
-	if (pFile != NULL && pArrayListPassenger != NULL)
+	int retorno = -1;
+	if(pFile != NULL && pArrayListPassenger !=NULL)
 	{
 		do
 		{
-			this = Passenger_new();
-			cant=fread(this, sizeof(this), 1,pFile);
-			/*if(cant!=1)
+			Passenger* this = Passenger_new();
+			if(this !=NULL)
 			{
-				if(feof(pFile))
+				if(fread(this,sizeof(Passenger),1,pFile) != 1)
 				{
+					free(this);
 					break;
 				}
 				else
 				{
-					printf("Error en la lectura del registro\n");
+					if(ll_add(pArrayListPassenger,this) == 0)
+					{
+						retorno = 0;
+					}
 				}
 			}
-			else
-			{*/
-				ll_add(pArrayListPassenger, this);
-			//}
 		}while(!feof(pFile));
-		retorno=0;
 	}
-
     return retorno;
 }
 
