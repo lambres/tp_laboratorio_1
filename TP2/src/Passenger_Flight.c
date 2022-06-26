@@ -35,7 +35,7 @@ static int GetID(void);
 /// @param fArray Array eFlight
 /// @param fLimite limite eFlight
 /// @return -1 si hay un ERROR y 0 si EXITO
-int getDataPassenger_FlightCode(Passenger *pArray, int pLimite, eFlight *fArray,
+int getDataPassenger_FlightCode(Salon *pArray, int pLimite, eFlight *fArray,
 	int fLimite) {
 	int retorno = -1;
 	char auxiliarName[LEN_CARACTERES];
@@ -124,7 +124,7 @@ static int GetID(void) {
 /// @param fArray array flight
 /// @param fLimite limite array flight
 /// @return retorna 0 si se logró imprimir y -1 si no
-int pasfl_printSumAverage(Passenger *pArray, int pLimite, eFlight *fArray,
+int pasfl_printSumAverage(Salon *pArray, int pLimite, eFlight *fArray,
 		int fLimite) {
 	int retorno = -1;
 	float acumPrecio = 0;
@@ -163,7 +163,7 @@ int pasfl_printSumAverage(Passenger *pArray, int pLimite, eFlight *fArray,
 /// @param fArray array flight
 /// @param fLimite limite array flight
 /// @return retorna 0 si se logró imprimir y -1 si no
-int pasfl_printPassengerActivSorted(Passenger *pArray, int pLimite, eFlight *fArray,
+int pasfl_printPassengerActivSorted(Salon *pArray, int pLimite, eFlight *fArray,
 		int fLimite) {
 	int retorno = -1;
 	int i;
@@ -199,7 +199,7 @@ int pasfl_printPassengerActivSorted(Passenger *pArray, int pLimite, eFlight *fAr
 /// @param fArray Array eFlight
 /// @param fLimite Tamaño eFlight
 /// @return devuelve 0 si EXITO y -1 si hubo un problema (ERROR)
-int modififyPassengerValues(Passenger *pArray, int pLimite, eFlight *fArray,int fLimite)
+int modififyPassengerValues(Salon *pArray, int pLimite, eFlight *fArray,int fLimite)
 {
 	int retorno = -1;
 	//int i;
@@ -210,7 +210,7 @@ int modififyPassengerValues(Passenger *pArray, int pLimite, eFlight *fArray,int 
 	int auxiliarId;
 	int nrocampo;
 	int auxIndex;
-	Passenger auxiliarPasajero;
+	Salon auxiliarPasajero;
 	eFlight auxiliarVuelos;
 	char auxiliarFlightCode[LEN_FLIGHTCODE];
 	int auxfPK_flightcode;

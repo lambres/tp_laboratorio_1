@@ -8,30 +8,30 @@
 #include "Passenger.h"
 
 
-Passenger* Passenger_new()
+Salon* Salon_new()
 {
-	return (Passenger*) malloc(sizeof(Passenger));
+	return (Salon*) malloc(sizeof(Salon));
 }
 
-Passenger* Passenger_newParametros(char* idStr,char* nombreStr ,char* apellidoStr, char* precioStr,
+Salon* Salon_newParametros(char* idStr,char* nombreStr ,char* apellidoStr, char* precioStr,
 		char* codigoVueloStr, char* tipoPasajeroStr, char* estadoVueloStr)
 {
 	int auxTipoPasajero = -1;
-	Passenger* this = Passenger_new();
+	Salon* this = Salon_new();
 	if (this != NULL)
 	{
-		auxTipoPasajero = Passenger_validatetipoPasajero(tipoPasajeroStr);
+		auxTipoPasajero = Salon_validateTipoSalon(tipoPasajeroStr);
 		if(auxTipoPasajero>=0)
 		{
-			if(Passenger_setIdTxt(this, idStr) == -1 ||
-			   Passenger_setPrecioTxt(this, precioStr) == -1 ||
-			   Passenger_setTipoPasajero(this, auxTipoPasajero) == -1  ||
-			   Passenger_setNombre(this, nombreStr) == -1  ||
-			   Passenger_setApellido(this, apellidoStr) == -1  ||
-			   Passenger_setCodigoVuelo(this, codigoVueloStr) == -1  ||
-			   Passenger_setEstadoVuelo(this, estadoVueloStr) == -1 )
+			if(Salon_setSalon_IdTxt(this, idStr) == -1 ||
+			   Salon_setPrecioTxt(this, precioStr) == -1 ||
+			   Salon_setTipoPasajero(this, auxTipoPasajero) == -1  ||
+			   Salon_setSalon_Nombre(this, nombreStr) == -1  ||
+			   Salon_setSalon_Direccion(this, apellidoStr) == -1  ||
+			   Salon_setCodigoVuelo(this, codigoVueloStr) == -1  ||
+			   Salon_setEstadoVuelo(this, estadoVueloStr) == -1 )
 			{
-				Passenger_delete(this);
+				Salon_delete(this);
 				this = NULL;
 			}
 		}
@@ -39,7 +39,7 @@ Passenger* Passenger_newParametros(char* idStr,char* nombreStr ,char* apellidoSt
 	return this;
 }
 
-void Passenger_delete(Passenger* this)
+void Salon_delete(Salon* this)
 {
 	if(this != NULL)
 	{
@@ -47,7 +47,7 @@ void Passenger_delete(Passenger* this)
 	}
 }
 
-int Passenger_setId(Passenger* this,int id)
+int Salon_setSalon_Id(Salon* this,int id)
 {
 	int retorno = -1;
 	if(this != NULL && id >=0 )
@@ -58,12 +58,12 @@ int Passenger_setId(Passenger* this,int id)
 	return retorno;
 }
 
-int Passenger_setIdTxt(Passenger* this,char* id)
+int Salon_setSalon_IdTxt(Salon* this,char* id)
 {
 	int retorno = -1;
 	if(this != NULL && id != NULL )
 	{
-		if (esNumerica(id, LEN_CHARID))
+		if (esNumerica(id, LEN_CHARSALONID))
 		{
 			this->id=atoi(id);
 			retorno = 0;
@@ -72,7 +72,7 @@ int Passenger_setIdTxt(Passenger* this,char* id)
 	return retorno;
 }
 
-int Passenger_getId(Passenger* this,int* id)
+int Salon_getSalon_Id(Salon* this,int* id)
 {
 	int retorno = -1;
 	if(this != NULL && id >=0 )
@@ -83,7 +83,7 @@ int Passenger_getId(Passenger* this,int* id)
 	return retorno;
 }
 
-int Passenger_getIdTxt(Passenger* this,char* id)
+int Salon_getSalon_IdTxt(Salon* this,char* id)
 {
 	int retorno = -1;
 	if(this != NULL && id != NULL )
@@ -94,7 +94,7 @@ int Passenger_getIdTxt(Passenger* this,char* id)
 	return retorno;
 }
 
-int Passenger_setNombre(Passenger* this,char* nombre)
+int Salon_setSalon_Nombre(Salon* this,char* nombre)
 {
 	int retorno = -1;
 	if(this != NULL && nombre != NULL)
@@ -104,7 +104,7 @@ int Passenger_setNombre(Passenger* this,char* nombre)
 	}
 	return retorno;
 }
-int Passenger_getNombre(Passenger* this,char* nombre)
+int Salon_getSalon_Nombre(Salon* this,char* nombre)
 {
 	int retorno = -1;
 	if(this != NULL && nombre != NULL )
@@ -116,7 +116,7 @@ int Passenger_getNombre(Passenger* this,char* nombre)
 }
 
 
-int Passenger_setApellido(Passenger* this,char* apellido)
+int Salon_setSalon_Direccion(Salon* this,char* apellido)
 {
 	int retorno = -1;
 	if(this != NULL && apellido != NULL )
@@ -127,7 +127,7 @@ int Passenger_setApellido(Passenger* this,char* apellido)
 	return retorno;
 }
 
-int Passenger_getApellido(Passenger* this,char* apellido)
+int Salon_getSalon_Direccion(Salon* this,char* apellido)
 {
 	int retorno = -1;
 	if(this != NULL && apellido != NULL )
@@ -138,7 +138,7 @@ int Passenger_getApellido(Passenger* this,char* apellido)
 	return retorno;
 }
 
-int Passenger_setPrecio(Passenger* this,float precio)
+int Salon_setPrecio(Salon* this,float precio)
 {
 	int retorno = -1;
 	if(this != NULL && precio >= 0)
@@ -149,7 +149,7 @@ int Passenger_setPrecio(Passenger* this,float precio)
 	return retorno;
 }
 
-int Passenger_setPrecioTxt(Passenger* this,char* precio)
+int Salon_setPrecioTxt(Salon* this,char* precio)
 {
 	int retorno = -1;
 	float auxiliarPrecio;
@@ -168,7 +168,7 @@ int Passenger_setPrecioTxt(Passenger* this,char* precio)
 	return retorno;
 }
 
-int Passenger_getPrecio(Passenger* this,float* precio)
+int Salon_getPrecio(Salon* this,float* precio)
 {
 	int retorno = -1;
 	if(this != NULL && precio >=0 )
@@ -179,7 +179,7 @@ int Passenger_getPrecio(Passenger* this,float* precio)
 	return retorno;
 }
 
-int Passenger_getPrecioTxt(Passenger* this,char* precio)
+int Salon_getPrecioTxt(Salon* this,char* precio)
 {
 	int retorno = -1;
 	if(this != NULL && precio != NULL )
@@ -190,7 +190,7 @@ int Passenger_getPrecioTxt(Passenger* this,char* precio)
 	return retorno;
 }
 
-int Passenger_setTipoPasajero(Passenger* this,int tipoPasajero)
+int Salon_setTipoPasajero(Salon* this,int tipoPasajero)
 {
 	int retorno = -1;
 	if (this != NULL && tipoPasajero >= 0 )
@@ -200,7 +200,7 @@ int Passenger_setTipoPasajero(Passenger* this,int tipoPasajero)
 	}
 	return retorno;
 }
-int Passenger_getTipoPasajero(Passenger* this,int* tipoPasajero)
+int Salon_getTipoPasajero(Salon* this,int* tipoPasajero)
 {
 	int retorno = -1;
 	if(this != NULL && tipoPasajero != NULL )
@@ -211,7 +211,7 @@ int Passenger_getTipoPasajero(Passenger* this,int* tipoPasajero)
 	return retorno;
 }
 
-int Passenger_setCodigoVuelo(Passenger* this,char* codigoVuelo)
+int Salon_setCodigoVuelo(Salon* this,char* codigoVuelo)
 {
 	int retorno = -1;
 	if (this != NULL && codigoVuelo != NULL)
@@ -221,7 +221,7 @@ int Passenger_setCodigoVuelo(Passenger* this,char* codigoVuelo)
 	}
 	return retorno;
 }
-int Passenger_getCodigoVuelo(Passenger* this,char* codigoVuelo)
+int Salon_getCodigoVuelo(Salon* this,char* codigoVuelo)
 {
 	int retorno = -1;
 	if(this != NULL && codigoVuelo != NULL )
@@ -233,7 +233,7 @@ int Passenger_getCodigoVuelo(Passenger* this,char* codigoVuelo)
 }
 
 
-int Passenger_setEstadoVuelo(Passenger* this,char* estadoVuelo)
+int Salon_setEstadoVuelo(Salon* this,char* estadoVuelo)
 {
 	int retorno = -1;
 	if (this != NULL && estadoVuelo != NULL)
@@ -243,7 +243,7 @@ int Passenger_setEstadoVuelo(Passenger* this,char* estadoVuelo)
 	}
 	return retorno;
 }
-int Passenger_getEstadoVuelo(Passenger* this,char* estadoVuelo)
+int Salon_getEstadoVuelo(Salon* this,char* estadoVuelo)
 {
 	int retorno = -1;
 	if(this != NULL && estadoVuelo != NULL )
@@ -254,22 +254,22 @@ int Passenger_getEstadoVuelo(Passenger* this,char* estadoVuelo)
 	return retorno;
 }
 
-int Passenger_validatetipoPasajero(char* tipoPasajeroStr)
+int Salon_validateTipoSalon(char* tipoPasajeroStr)
 {
 	int retorno = -1;
-	if(strncmp(tipoPasajeroStr,"FirstClass",LEN_TIPOPASAJERO)==0)
+	if(strncmp(tipoPasajeroStr,"FirstClass",LEN_TIPOSALON)==0)
 			{
 				retorno = 0;
 			}
 			else
 			{
-				if(strncmp(tipoPasajeroStr,"ExecutiveClass",LEN_TIPOPASAJERO)==0)
+				if(strncmp(tipoPasajeroStr,"ExecutiveClass",LEN_TIPOSALON)==0)
 				{
 					retorno = 1;
 				}
 				else
 				{
-					if(strncmp(tipoPasajeroStr,"EconomyClass",LEN_TIPOPASAJERO)==0)
+					if(strncmp(tipoPasajeroStr,"EconomyClass",LEN_TIPOSALON)==0)
 					{
 						retorno = 2;
 					}
@@ -279,11 +279,11 @@ int Passenger_validatetipoPasajero(char* tipoPasajeroStr)
 	return retorno;
 }
 
-int Passenger_printOne(Passenger* pPasajero)
+int Salon_printOneSalon(Salon* pPasajero)
 {
 	int retorno = -1;
-	char auxTipoPasajero[LEN_TIPOPASAJERO];
-	Passenger_getTipoPasajeroStr(pPasajero->tipoPasajero, auxTipoPasajero);
+	char auxTipoPasajero[LEN_TIPOSALON];
+	Salon_getTipoSalonStr(pPasajero->tipoPasajero, auxTipoPasajero);
 	if (pPasajero != NULL)
 	{
 		printf("%-10d|%-20s|%-20s|%-11.f|%-15s|%-15s|%-15s|\n",pPasajero->id, pPasajero->nombre,
@@ -293,28 +293,28 @@ int Passenger_printOne(Passenger* pPasajero)
 	return retorno;
 }
 
-int Passenger_printOneFile(FILE* archivo, Passenger* pPasajero)
+int Salon_printOneSalonFile(FILE* archivo, Salon* pPasajero)
 {
 	int retorno = -1;
-	char auxIdStr[LEN_CHARID];
+	char auxIdStr[LEN_CHARSALONID];
 	char auxNombre[LEN_NOMBRE];
 	char auxApellido[LEN_APELLIDO];
 	char auxPrecio[LEN_CHARPRICE];
 	char auxFlycode[LEN_CODVUELO];
-	char auxTipoPasajero[LEN_TIPOPASAJERO];
+	char auxTipoPasajero[LEN_TIPOSALON];
 	char auxEstadoVuelo[LEN_ESTADOVUELO];
 	int auxTipo;
 	if (pPasajero != NULL && archivo != NULL)
 	{
-		if(!(Passenger_getIdTxt(pPasajero, auxIdStr)) &&
-			!(Passenger_getNombre(pPasajero, auxNombre)) &&
-			!(Passenger_getApellido(pPasajero, auxApellido)) &&
-			!(Passenger_getPrecioTxt(pPasajero, auxPrecio)) &&
-			!(Passenger_getCodigoVuelo(pPasajero, auxFlycode)) &&
-			!(Passenger_getTipoPasajero(pPasajero, &auxTipo)) &&
-			!(Passenger_getEstadoVuelo(pPasajero, auxEstadoVuelo)))
+		if(!(Salon_getSalon_IdTxt(pPasajero, auxIdStr)) &&
+			!(Salon_getSalon_Nombre(pPasajero, auxNombre)) &&
+			!(Salon_getSalon_Direccion(pPasajero, auxApellido)) &&
+			!(Salon_getPrecioTxt(pPasajero, auxPrecio)) &&
+			!(Salon_getCodigoVuelo(pPasajero, auxFlycode)) &&
+			!(Salon_getTipoPasajero(pPasajero, &auxTipo)) &&
+			!(Salon_getEstadoVuelo(pPasajero, auxEstadoVuelo)))
 		{
-			Passenger_getTipoPasajeroStr(auxTipo, auxTipoPasajero);
+			Salon_getTipoSalonStr(auxTipo, auxTipoPasajero);
 			fprintf(archivo,"%s,%s,%s,%s,%s,%s,%s\n",auxIdStr, auxNombre,auxApellido,
 					auxPrecio, auxFlycode, auxTipoPasajero, auxEstadoVuelo);
 		}
@@ -324,7 +324,7 @@ int Passenger_printOneFile(FILE* archivo, Passenger* pPasajero)
 }
 
 
-int Passenger_getTipoPasajeroStr(int tipoPasajero, char* tipoPasajeroStr)
+int Salon_getTipoSalonStr(int tipoPasajero, char* tipoPasajeroStr)
 {
 	int retorno = -1;
 	if (tipoPasajeroStr != NULL && tipoPasajero >=0 && tipoPasajero <=2)
@@ -332,13 +332,13 @@ int Passenger_getTipoPasajeroStr(int tipoPasajero, char* tipoPasajeroStr)
 		switch (tipoPasajero)
 		{
 		case 0:
-			strncpy(tipoPasajeroStr,"FirstClass",LEN_TIPOPASAJERO);
+			strncpy(tipoPasajeroStr,"FirstClass",LEN_TIPOSALON);
 			break;
 		case 1:
-			strncpy(tipoPasajeroStr,"ExecutiveClass",LEN_TIPOPASAJERO);
+			strncpy(tipoPasajeroStr,"ExecutiveClass",LEN_TIPOSALON);
 			break;
 		case 2:
-			strncpy(tipoPasajeroStr,"EconomyClass",LEN_TIPOPASAJERO);
+			strncpy(tipoPasajeroStr,"EconomyClass",LEN_TIPOSALON);
 			break;
 		}
 		retorno = 0;
@@ -346,26 +346,26 @@ int Passenger_getTipoPasajeroStr(int tipoPasajero, char* tipoPasajeroStr)
 	return retorno;
 }
 
-int Passenger_setTipoPasajeroStr(Passenger* this,char* tipoPasajero)
+int Salon_setTipoSalonStr(Salon* this,char* tipoPasajero)
 {
 	int retorno = -1;
 	if (this != NULL && tipoPasajero != NULL)
 	{
-		if (strncmp(tipoPasajero,"FirstClass",LEN_TIPOPASAJERO)==0)
+		if (strncmp(tipoPasajero,"FirstClass",LEN_TIPOSALON)==0)
 		{
 			this->tipoPasajero=0;
 			retorno = 0;
 		}
 		else
 		{
-			if(strncmp(tipoPasajero,"ExecutiveClass",LEN_TIPOPASAJERO)==0)
+			if(strncmp(tipoPasajero,"ExecutiveClass",LEN_TIPOSALON)==0)
 			{
 				this->tipoPasajero=1;
 				retorno = 0;
 			}
 			else
 			{
-				if(strncmp(tipoPasajero,"EconomyClass",LEN_TIPOPASAJERO)==0)
+				if(strncmp(tipoPasajero,"EconomyClass",LEN_TIPOSALON)==0)
 				{
 					this->tipoPasajero=2;
 					retorno = 0;
@@ -376,17 +376,17 @@ int Passenger_setTipoPasajeroStr(Passenger* this,char* tipoPasajero)
 	return retorno;
 }
 
-int Passenger_mayor(void* item1,void* item2)
+int Salon_mayor(void* item1,void* item2)
 {
 	int retorno = 0;
-	Passenger* primero;
-	Passenger* segundo;
+	Salon* primero;
+	Salon* segundo;
 	char valor1[LEN_APELLIDO];
 	char valor2[LEN_APELLIDO];
-	primero = (Passenger*) item1;
-	segundo = (Passenger*) item2;
-	if(!Passenger_getApellido(primero, valor1) &&
-		!Passenger_getApellido(segundo, valor2))
+	primero = (Salon*) item1;
+	segundo = (Salon*) item2;
+	if(!Salon_getSalon_Direccion(primero, valor1) &&
+		!Salon_getSalon_Direccion(segundo, valor2))
 	{
 		if(strncmp(valor1,valor2,LEN_APELLIDO)>0)
 		{

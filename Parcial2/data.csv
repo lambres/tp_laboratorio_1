@@ -1000,3 +1000,4 @@ id,name,lastname,price,flycode,typePassenger,statusFlight
 999,Tamarra,Navarro,15000,MM0987B,EconomyClass,En Horario
 1000,Saleem,Torres,20000,MM0987B,EconomyClass,En Horario
 1015,Dario,Zevallos,666,AAAA,EconomyClass,Aterrizado
+1016,Juan,Pelotas,6666,qwexcc,FirstClass,Aterrizado

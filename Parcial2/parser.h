@@ -1,2 +1,3 @@
-int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger);
-int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger);
+int parser_SalonFromText(FILE* pFile , LinkedList* pArrayList);
+int parser_ArcadeFromText(FILE* pFile , LinkedList* pArrayList);
+int parser_JuegoFromText(FILE* pFile , LinkedList* pArrayList);

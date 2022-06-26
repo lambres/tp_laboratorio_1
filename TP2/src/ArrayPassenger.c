@@ -19,7 +19,7 @@
  * \return 	int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
  *
  */
-int initPassengers(Passenger *list, int len) {
+int initPassengers(Salon *list, int len) {
 	int retorno = -1;
 	int i;
 	for (i = 0; i < len; i++) {
@@ -43,10 +43,10 @@ int initPassengers(Passenger *list, int len) {
  * \return 	int Return (-1) if Error [Invalid length or NULL pointer or without
  * \			free space] - (0) if Ok
  */
-int addPassenger(Passenger *list, int len, int id, char name[], char lastName[],
+int addPassenger(Salon *list, int len, int id, char name[], char lastName[],
 		float price, int typePassenger, char flycode[]) {
 	int retorno = -1;
-	Passenger bufferPasajero;
+	Salon bufferPasajero;
 	if (list != NULL
 			&& len
 					> 0&& id >= 0 && name != NULL && lastName != NULL && price > 0 && typePassenger >= 0 && typePassenger <=2 && flycode != NULL) {
@@ -72,7 +72,7 @@ int addPassenger(Passenger *list, int len, int id, char name[], char lastName[],
  * \NULL pointer received or passenger not found]
  *
  */
-int findPassengerById(Passenger *list, int len, int id) {
+int findPassengerById(Salon *list, int len, int id) {
 	int retorno = -1;
 	int i;
 	if (list != NULL && len > 0 && id >= 0) {
@@ -96,7 +96,7 @@ int findPassengerById(Passenger *list, int len, int id) {
  * \find a passenger] - (0) if Ok
  *
  */
-int removePassenger(Passenger *list, int len, int id) {
+int removePassenger(Salon *list, int len, int id) {
 	int retorno = -1;
 	int i;
 	if (list != NULL && len > 0 && id >= 0) {
@@ -121,12 +121,12 @@ int removePassenger(Passenger *list, int len, int id) {
  * \return 	int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
  *
  */
-int sortPassengers(Passenger *list, int len, int order) {
+int sortPassengers(Salon *list, int len, int order) {
 	int retorno = -1;
 	int flagSwap;
 	int auxComparacion;
 	int i;
-	Passenger buffer;
+	Salon buffer;
 	if (list != NULL && len > 0 && (order == 0 || order == 1)) {
 		do {
 			flagSwap = 0;
@@ -168,7 +168,7 @@ int sortPassengers(Passenger *list, int len, int order) {
 /// @brief imprimo el dato pasado como argumento
 ///
 /// @param pPassenger estructura pasada como dato para imprimir
-void printOnePassenger(Passenger pPassenger[]) {
+void printOnePassenger(Salon pPassenger[]) {
 	//PRINTF DE UN SOLO Passenger
 	char auxTipo[10];
 	printf("|%5d", pPassenger->id);
@@ -197,10 +197,10 @@ void printOnePassenger(Passenger pPassenger[]) {
  * \return int
  *
  */
-int printPassenger(Passenger *list, int length) {
+int printPassenger(Salon *list, int length) {
 	int retorno = -1;
 	int i;
-	Passenger auxPasajero;
+	Salon auxPasajero;
 	printf("%-6s", "|ID");
 	printf("%-21s", "|Nombre");
 	printf("%-21s", "|Apellido");
@@ -227,12 +227,12 @@ int printPassenger(Passenger *list, int length) {
  * \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
  *
  */
-int sortPassengersByCode(Passenger *list, int len, int order) {
+int sortPassengersByCode(Salon *list, int len, int order) {
 	int retorno = -1;
 	int flagSwap;
 	int auxComparacion;
 	int i;
-	Passenger buffer;
+	Salon buffer;
 	if (list != NULL && len > 0 && (order == 0 || order == 1)) {
 		do {
 			flagSwap = 0;
@@ -276,7 +276,7 @@ int sortPassengersByCode(Passenger *list, int len, int order) {
 /// @param array Array de Passenger donde buscar
 /// @param TAM Tamaño del array de Passenger
 /// @return Devuelve el indice de la posicion vacia si lo encuentra y -1 si no hay (ERROR)
-int Passenger_ObtenerIndexLibre(Passenger array[], int TAM) {
+int Passenger_ObtenerIndexLibre(Salon array[], int TAM) {
 	int retorno = -1;
 	int i;
 
@@ -302,7 +302,7 @@ int Passenger_ObtenerIndexLibre(Passenger array[], int TAM) {
 /// @param array Array de Passenger donde buscar
 /// @param TAM Tamaño del array de Passenger
 /// @return Devuelve el indice de la posicion ocupada si lo encuentra y -1 si no hay (ERROR)
-int Passenger_ObtenerIndexOcupado(Passenger array[], int TAM) {
+int Passenger_ObtenerIndexOcupado(Salon array[], int TAM) {
 	int retorno = -1;
 	int i;
 
@@ -329,7 +329,7 @@ int Passenger_ObtenerIndexOcupado(Passenger array[], int TAM) {
 /// @param limite Tamaño del puntero
 /// @param indice indice buscado
 /// @return devuelve el ID (EXITO) buscado si lo encuentra y -1 si no lo encuentra (ERROR)
-int getPassengerId(Passenger *array, int limite, int indice) {
+int getPassengerId(Salon *array, int limite, int indice) {
 	int retorno = -1;
 	int i;
 	if (array != NULL && limite > 0 && indice < limite) {

@@ -20,7 +20,7 @@ int main(void) {
 	#ifdef _WIN32
 		LIMPIAR_SALIDA
 	#endif
-	Passenger pasajeros[PAS_ELEMENTS];
+	Salon pasajeros[PAS_ELEMENTS];
 	eFlight vuelos[FLI_ELEMENTS];
 
 	int auxiliarId = 0;

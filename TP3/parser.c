@@ -13,12 +13,12 @@
 int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 {
 	int retorno = 1;
-	char auxId[LEN_CHARID];
+	char auxId[LEN_CHARSALONID];
 	char auxNombre[LEN_NOMBRE];
 	char auxApellido[LEN_APELLIDO];
 	char auxPrecio[LEN_CHARPRICE];
 	char auxCodigoVuelo[LEN_CODVUELO];
-	char auxTipoPasajero[LEN_TIPOPASAJERO];
+	char auxTipoPasajero[LEN_TIPOSALON];
 	char auxEstadoVuelo[LEN_ESTADOVUELO];
 
 	int camposLeidos;
@@ -31,7 +31,7 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 			camposLeidos = fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\r\n]\n",auxId,auxNombre,auxApellido,auxPrecio,auxCodigoVuelo,auxTipoPasajero,auxEstadoVuelo);
 			if (camposLeidos==7)
 			{
-				Passenger* pasajero = Passenger_newParametros(auxId, auxNombre, auxApellido, auxPrecio, auxCodigoVuelo, auxTipoPasajero, auxEstadoVuelo);
+				Salon* pasajero = Salon_newParametros(auxId, auxNombre, auxApellido, auxPrecio, auxCodigoVuelo, auxTipoPasajero, auxEstadoVuelo);
 				if (pasajero!=NULL)
 				{
 					ll_add(pArrayListPassenger, pasajero);
@@ -57,10 +57,10 @@ int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 	{
 		do
 		{
-			Passenger* this = Passenger_new();
+			Salon* this = Salon_new();
 			if(this !=NULL)
 			{
-				if(fread(this,sizeof(Passenger),1,pFile) != 1)
+				if(fread(this,sizeof(Salon),1,pFile) != 1)
 				{
 					free(this);
 					break;

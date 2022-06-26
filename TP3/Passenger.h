@@ -9,7 +9,7 @@
 #include <string.h>
 #include "utn.h"
 #ifndef PASSENGER_H_
-#define PASSENGER_H_
+#define SALON_H_
 #include "LinkedList.h"
 
 
@@ -17,8 +17,8 @@
 #define LEN_APELLIDO 50
 #define LEN_CODVUELO 8
 #define LEN_ESTADOVUELO 20
-#define LEN_TIPOPASAJERO 20
-#define LEN_CHARID 5
+#define LEN_TIPOSALON 20
+#define LEN_CHARSALONID 5
 #define LEN_CHARPRICE 10
 
 
@@ -31,48 +31,48 @@ typedef struct
 	char codigoVuelo[LEN_CODVUELO];
 	int tipoPasajero;
 	char estadoVuelo[LEN_ESTADOVUELO];
-}Passenger;
+}Salon;
 
-Passenger* Passenger_new();
-Passenger* Passenger_newParametros(char* idStr,char* nombreStr ,char* apellidoStr, char* precioStr,
+Salon* Salon_new();
+Salon* Salon_newParametros(char* idStr,char* nombreStr ,char* apellidoStr, char* precioStr,
 		char* codigoVueloStr, char* tipoPasajeroStr, char* estadoVueloStr);
 
-void Passenger_delete();
+void Salon_delete();
 
-int Passenger_setId(Passenger* this,int id);
-int Passenger_getId(Passenger* this,int* id);
+int Salon_setSalon_Id(Salon* this,int id);
+int Salon_getSalon_Id(Salon* this,int* id);
 
-int Passenger_setIdTxt(Passenger* this,char* id);
-int Passenger_getIdTxt(Passenger* this,char* id);
+int Salon_setSalon_IdTxt(Salon* this,char* id);
+int Salon_getSalon_IdTxt(Salon* this,char* id);
 
-int Passenger_setNombre(Passenger* this,char* nombre);
-int Passenger_getNombre(Passenger* this,char* nombre);
+int Salon_setSalon_Nombre(Salon* this,char* nombre);
+int Salon_getSalon_Nombre(Salon* this,char* nombre);
 
-int Passenger_setApellido(Passenger* this,char* apellido);
-int Passenger_getApellido(Passenger* this,char* apellido);
+int Salon_setSalon_Direccion(Salon* this,char* apellido);
+int Salon_getSalon_Direccion(Salon* this,char* apellido);
 
-int Passenger_setPrecio(Passenger* this,float precio);
-int Passenger_getPrecio(Passenger* this,float* precio);
+int Salon_setPrecio(Salon* this,float precio);
+int Salon_getPrecio(Salon* this,float* precio);
 
-int Passenger_setPrecioTxt(Passenger* this,char* precio);
-int Passenger_getPrecioTxt(Passenger* this,char* precio);
+int Salon_setPrecioTxt(Salon* this,char* precio);
+int Salon_getPrecioTxt(Salon* this,char* precio);
 
-int Passenger_setTipoPasajero(Passenger* this,int tipoPasajero);
-int Passenger_getTipoPasajero(Passenger* this,int* tipoPasajero);
+int Salon_setTipoPasajero(Salon* this,int tipoPasajero);
+int Salon_getTipoPasajero(Salon* this,int* tipoPasajero);
 
-int Passenger_setCodigoVuelo(Passenger* this,char* codigoVuelo);
-int Passenger_getCodigoVuelo(Passenger* this,char* codigoVuelo);
+int Salon_setCodigoVuelo(Salon* this,char* codigoVuelo);
+int Salon_getCodigoVuelo(Salon* this,char* codigoVuelo);
 
-int Passenger_setEstadoVuelo(Passenger* this,char* estadoVuelo);
-int Passenger_getEstadoVuelo(Passenger* this,char* estadoVuelo);
+int Salon_setEstadoVuelo(Salon* this,char* estadoVuelo);
+int Salon_getEstadoVuelo(Salon* this,char* estadoVuelo);
 
-int Passenger_validatetipoPasajero(char* tipoPasajeroStr);
-int Passenger_getTipoPasajeroStr(int tipoPasajero, char * tipoPasajeroStr);
-int Passenger_setTipoPasajeroStr(Passenger* this,char* tipoPasajero);
+int Salon_validateTipoSalon(char* tipoPasajeroStr);
+int Salon_getTipoSalonStr(int tipoPasajero, char * tipoPasajeroStr);
+int Salon_setTipoSalonStr(Salon* this,char* tipoPasajero);
 
-int Passenger_printOne(Passenger* pPasajero);
-int Passenger_printOneFile(FILE* archivo, Passenger* pPasajero);
+int Salon_printOneSalon(Salon* pPasajero);
+int Salon_printOneSalonFile(FILE* archivo, Salon* pPasajero);
 
-int Passenger_mayor(void* item1,void* item2);
+int Salon_mayor(void* item1,void* item2);
 
 #endif /* PASSENGER_H_ */

@@ -24,19 +24,19 @@ typedef struct {
 	char flycode[LEN_FLIGHTCODE];
 	int typePassenger;
 	int isEmpty;
-} Passenger;
+} Salon;
 
-int initPassengers(Passenger *list, int len);
-int addPassenger(Passenger *list, int len, int id, char name[], char lasName[],
+int initPassengers(Salon *list, int len);
+int addPassenger(Salon *list, int len, int id, char name[], char lasName[],
 float price, int typePassenger, char flycode[]);
-int findPassengerById(Passenger *list, int len, int id);
-int removePassenger(Passenger *list, int len, int id);
-int sortPassengers(Passenger *list, int len, int order);
-int printPassenger(Passenger *list, int length);
-int sortPassengersByCode(Passenger *list, int len, int order);
-int Passenger_ObtenerIndexLibre(Passenger array[], int TAM);
-int Passenger_ObtenerIndexOcupado(Passenger array[], int TAM);
-void printOnePassenger(Passenger *array);
+int findPassengerById(Salon *list, int len, int id);
+int removePassenger(Salon *list, int len, int id);
+int sortPassengers(Salon *list, int len, int order);
+int printPassenger(Salon *list, int length);
+int sortPassengersByCode(Salon *list, int len, int order);
+int Passenger_ObtenerIndexLibre(Salon array[], int TAM);
+int Passenger_ObtenerIndexOcupado(Salon array[], int TAM);
+void printOnePassenger(Salon *array);
 //int modififyPassengerValues(Passenger *array, int limite);
 
 #endif /* ARRAYPASSENGER_H_ */

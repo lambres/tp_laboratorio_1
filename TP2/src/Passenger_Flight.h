@@ -10,9 +10,9 @@
 
 #include "ArrayPassenger.h"
 #include "eFlight.h"
-int getDataPassenger_FlightCode(Passenger* pArray, int pLimite, eFlight* fArray, int fLimite);
-int pasfl_printSumAverage(Passenger* pArray, int pLimite, eFlight* fArray, int fLimite);
-int pasfl_printPassengerActivSorted(Passenger *pArray, int pLimite, eFlight *fArray,int fLimite);
-int modififyPassengerValues(Passenger *pArray, int pLimite, eFlight *fArray,int fLimite);
+int getDataPassenger_FlightCode(Salon* pArray, int pLimite, eFlight* fArray, int fLimite);
+int pasfl_printSumAverage(Salon* pArray, int pLimite, eFlight* fArray, int fLimite);
+int pasfl_printPassengerActivSorted(Salon *pArray, int pLimite, eFlight *fArray,int fLimite);
+int modififyPassengerValues(Salon *pArray, int pLimite, eFlight *fArray,int fLimite);
 
 #endif /* PASSENGER_FLIGHT_H_ */

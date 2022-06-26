@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../inc/LinkedList.h"
+#include "LinkedList.h"
 
 
 static Node* getNode(LinkedList* this, int nodeIndex);
@@ -232,7 +232,6 @@ int ll_remove(LinkedList* this,int index)
 	int returnAux = -1;
 	Node* nodoAnterior = NULL;
 	Node* nodoActual = NULL;
-	Node* nodoSiguiente = NULL;
 	if(this != NULL && index >= 0 && index < ll_len(this))
 	{
 		nodoActual = getNode(this,index);
@@ -242,7 +241,6 @@ int ll_remove(LinkedList* this,int index)
 			{
 				//cuando el index es 0 es el elemento siguiente a this
 				//es el siguinete al actual, o sea al index 1
-				//nodoSiguiente =
 				this->pFirstNode = nodoActual->pNextNode;//nodoSiguiente;
 				returnAux = 0;
 			}
