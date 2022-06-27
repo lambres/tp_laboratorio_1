@@ -18,14 +18,15 @@
 #define LEN_CHARARCADEID 5
 #define LEN_CANTJUGADORES 5
 #define LEN_CAPACIDAD 5
-
+#define STEREO 0
+#define MONO 1
 //Arcade_id,Arcade_nacionalidad,Arcade_tipoSonido,Arcade_cantJugadores,Arcade_capacidad,fkIdSalon,fkIdJuego
 
 typedef struct
 {
 	int Arcade_id;
 	char Arcade_nacionaliad[LEN_NACIONALIDAD];
-	char Arcade_tipoSonido[LEN_TIPOSONIDO];
+	int Arcade_tipoSonido;
 	int Arcade_cantJugadores;
 	int Arcade_capacidad;
 	int fkIdSalon;
@@ -52,18 +53,26 @@ int Arcade_getCantJugadores(Arcade* this,int* direccion);
 int Arcade_setCantJugadoresTxt(Arcade* this,char* cantJugadores);
 
 int Arcade_setCapacidadTxt(Arcade* this,char* capacidad);
+int Arcade_setCapacidad(Arcade* this,int cantidad);
 
+int Arcade_setfkIdSalon(Arcade* this,int fkIdSalon);
+int Arcade_getfkIdSalon(Arcade* this,int* fkIdSalon);
 int Arcade_setfkSalonTxt(Arcade* this,char* id);
+
+int Arcade_setfkIdJuego(Arcade* this,int fkIdJuego);
 int Arcade_setfkJuegoTxt(Arcade* this,char* id);
 
+int Arcade_setTipoSonido(Arcade* this,int tipoSonido);
+int Arcade_getTipoSonido(Arcade* this,int* tipoSonido);
 
+int Arcade_setTipoSonidoTxt(Arcade* this,char* tipoSonido);
+int Arcade_getTipoSonidoTxt(Arcade* this,char* tipoSonido);
 
-int Arcade_setTipoSonido(Arcade* this,char* tipoSalon);
-int Arcade_getTipoSonido(Arcade* this, char* tipoSalonStr);
 
 int Arcade_printOne(Arcade* pSalon);
 int Arcade_printOneFile(FILE* archivo, Arcade* pSalon);
 
 int Arcade_mayor(void* item1,void* item2);
+int arcade_obtenerValorTipoSonido(int tipoInt, char* tipoStr);
 
 #endif /* SALON_H_ */

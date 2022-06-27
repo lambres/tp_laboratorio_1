@@ -10,26 +10,21 @@
 
 Salon* Salon_new()
 {
-	return (Arcade*) malloc(sizeof(Arcade));
+	return (Salon*) malloc(sizeof(Salon));
 }
 
 Salon* Salon_newParametros(char* idSalonStr,char* nombreStr ,char* direccionStr, char* tipoStr)
 {
-	int auxTipoSalon = -1;
 	Salon* this = Salon_new();
 	if (this != NULL)
 	{
-		auxTipoSalon = Salon_validateTipoSalon(tipoStr);
-		if(auxTipoSalon>=0)
+		if(Salon_setSalon_IdTxt(this, idSalonStr) == -1 ||
+		   Salon_setSalon_Nombre(this, nombreStr) == -1  ||
+		   Salon_setSalon_Direccion(this, direccionStr) == -1 ||
+		   Salon_setTipoSalonStr(this, tipoStr) == -1)
 		{
-			if(Salon_setSalon_IdTxt(this, idSalonStr) == -1 ||
-			   Salon_setSalon_Nombre(this, nombreStr) == -1  ||
-			   Salon_setSalon_Direccion(this, direccionStr) == -1 ||
-			   Salon_setTipoSalon(this, auxTipoSalon) == -1)
-			{
-				Salon_delete(this);
-				this = NULL;
-			}
+			Salon_delete(this);
+			this = NULL;
 		}
 	}
 	return this;
@@ -177,13 +172,17 @@ int Salon_validateTipoSalon(char* tipoSalonStr)
 int Salon_printOneSalon(Salon* pSalon)
 {
 	int retorno = -1;
-	char auxTipoPasajero[LEN_TIPOSALON];
-	Salon_getTipoSalonStr(pSalon->Salon_tipo, auxTipoPasajero);
-	if (pSalon != NULL)
-	{
-		printf("%-10d|%-20s|%-20s|%-15s|\n",pSalon->Salon_id, pSalon->Salon_nombre,
-				pSalon->Salon_direccion, pSalon->Salon_tipo);
-	}
+		char tipoSalon[LEN_TIPOSALON];
+		int auxId;
+		if (pSalon != NULL)
+		{
+			auxId = pSalon->Salon_tipo;
+			if(!salon_obtenerValorTipo(auxId, tipoSalon))
+			{
+				printf("|%-5d|%-30s|%-30s|%-15s|\n",pSalon->Salon_id, pSalon->Salon_nombre,pSalon->Salon_direccion,tipoSalon);
+			}
+		retorno = 0;
+		}
 	return retorno;
 }
 
@@ -193,17 +192,15 @@ int Salon_printOneSalonFile(FILE* archivo, Salon* pSalon)
 	char auxIdStr[LEN_CHARSALONID];
 	char auxNombre[LEN_NOMBRE];
 	char auxDireccion[LEN_DIRECCION];
-	char auxTipoSalon[LEN_TIPOSALON];
 	int auxTipo;
 	if (pSalon != NULL && archivo != NULL)
 	{
 		if(!(Salon_getSalon_IdTxt(pSalon, auxIdStr)) &&
 			!(Salon_getSalon_Nombre(pSalon, auxNombre)) &&
 			!(Salon_getSalon_Direccion(pSalon, auxDireccion)) &&
-			!(Salon_getTipoSalonStr(pSalon, &auxTipo)))
+			!(Salon_getTipoSalon(pSalon, &auxTipo)))
 		{
-			Salon_getTipoSalonStr(auxTipo, auxTipoSalon);
-			fprintf(archivo,"%s,%s,%s,%s\n",auxIdStr, auxNombre,auxDireccion,auxTipoSalon);
+			fprintf(archivo,"%s,%s,%s,%d\n",auxIdStr, auxNombre,auxDireccion,auxTipo);
 		}
 		retorno = 0;
 	}
@@ -211,20 +208,12 @@ int Salon_printOneSalonFile(FILE* archivo, Salon* pSalon)
 }
 
 
-int Salon_getTipoSalonStr(int tipoSalon, char* tipoSalonStr)
+int Salon_getTipoSalonStr(Salon* this, char* tipoSalonStr)
 {
 	int retorno = -1;
-	if (tipoSalonStr != NULL && tipoSalon >=0 && tipoSalon <=2)
+	if(this != NULL && tipoSalonStr != NULL )
 	{
-		switch (tipoSalon)
-		{
-		case 1:
-			strncpy(tipoSalonStr,"SHOPPING",LEN_TIPOSALON);
-			break;
-		case 2:
-			strncpy(tipoSalonStr,"LOCAL",LEN_TIPOSALON);
-			break;
-		}
+		sprintf(tipoSalonStr,"%d",this->Salon_tipo);
 		retorno = 0;
 	}
 	return retorno;
@@ -233,23 +222,15 @@ int Salon_getTipoSalonStr(int tipoSalon, char* tipoSalonStr)
 int Salon_setTipoSalonStr(Salon* this,char* tipoSalon)
 {
 	int retorno = -1;
-	if (this != NULL && tipoSalon != NULL)
-	{
-		if (strncmp(tipoSalon,"SHOPPING",LEN_TIPOSALON)==0)
+		if(this != NULL && tipoSalon != NULL )
 		{
-			this->Salon_tipo=1;
-			retorno = 0;
-		}
-		else
-		{
-			if(strncmp(tipoSalon,"LOCAL",LEN_TIPOSALON)==0)
+			if (esNumerica(tipoSalon, LEN_TIPOSALON))
 			{
-				this->Salon_tipo=2;
+				this->Salon_tipo=atoi(tipoSalon);
 				retorno = 0;
 			}
 		}
-	}
-	return retorno;
+		return retorno;
 }
 
 int Salon_mayor(void* item1,void* item2)
@@ -276,3 +257,22 @@ int Salon_mayor(void* item1,void* item2)
 	return retorno;
 }
 
+
+int salon_obtenerValorTipo(int tipoInt, char* tipoStr)
+{
+	int retorno = -1;
+	if (tipoInt >= 1 && tipoInt <= 2 && tipoStr != NULL)
+	{
+		switch (tipoInt)
+			{
+			case SHOPPING:
+				strncpy(tipoStr,"SHOPPING",LEN_TIPOSALON);
+				break;
+			case LOCAL:
+				strncpy(tipoStr,"LOCAL",LEN_TIPOSALON);
+				break;
+			}
+		retorno = 0;
+	}
+	return retorno;
+}

@@ -42,6 +42,7 @@ int parser_SalonFromText(FILE* pFile , LinkedList* pArrayListSalon)
 				}
 			}
 		}while (!feof(pFile));
+		puts("Archivo Salon.csv procesado correctamente");
 	}
 	return retorno;
 }
@@ -91,6 +92,7 @@ int parser_ArcadeFromText(FILE* pFile , LinkedList* pArrayListArcade)
 				}
 			}
 		}while (!feof(pFile));
+		puts("Archivo Arcade.csv procesado correctamente");
 	}
 	return retorno;
 }
@@ -131,6 +133,7 @@ int parser_JuegoFromText(FILE* pFile , LinkedList* pArrayListJuegos)
 				}
 			}
 		}while (!feof(pFile));
+		puts("Archivo Juego.csv procesado correctamente");
 	}
 	return retorno;
 }

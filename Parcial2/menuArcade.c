@@ -1,0 +1,103 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "Controller.h"
+#include "LinkedList.h"
+#include "Salon.h"
+#include "Arcade.h"
+#include "Juego.h"
+#include "utn.h"
+#include "menuArcade.h"
+
+int getIDArcade(int* nuevoIdArcade);
+int putIDArcade(int* nuevoIdArcade);
+int auxIndice;
+void adminArcades(LinkedList* listaSalones, LinkedList* listaArcades, LinkedList* listaJuegos)
+{
+
+	//variabes auxiliares
+	int opcion = 0;
+	while(opcion!=5)
+	{
+		#ifdef __linux__
+			LIMPIAR_CONSOLA
+		#elif _WIN32
+			LIMPIAR_CONSOLA
+		#elif __APPLE__
+			LIMPIAR_CONSOLA
+		#endif
+		printf("\n-------------- MENU ABM ARCADES --------------\n");
+		printf("1. INCORPORAR ARCADE\n");
+		printf("2. MODIFICAR ARCADE\n");
+		printf("3. ELIMINAR ARCADE\n");
+		printf("4. IMPRIMIR ARCADE\n");
+		printf("5. Salir\n");
+		utn_getNumeroInt(&opcion, "Seleccione opcion", "Error reintente", 1, 5, 2);
+
+		switch(opcion)
+		{
+		case 1:
+			if (!getIDArcade(&auxIndice))
+			{
+				auxIndice++;
+			}
+			if(!(controller_addArcade(listaSalones,listaArcades,listaJuegos,auxIndice)))
+			{
+				if (!putIDArcade(&auxIndice))
+				{
+					printf("Nuevo Id utilizado %d:\n",auxIndice);
+				}
+			}
+			else
+			{
+				printf("ERROR, VUELVA A INTENTARLO\n");
+			}
+			break;
+		case 2:
+			break;
+		case 3:
+			if(controller_removeSalon(listaSalones , listaArcades) != 0)
+			{
+				printf("No se pudo eliminar el salon\n");
+			}
+			break;
+		case 4:
+			if (controller_ListArcades(listaArcades)!=0)
+			{
+				printf("No se pudo listar los arcades\n");
+			}
+			break;
+		case 5:
+			break;
+		}
+	}
+
+
+}
+
+
+int getIDArcade(int* nuevoIdArcade)
+{
+	FILE* pArchivo;
+	if ((pArchivo=fopen("idArcade.csv","r"))==NULL)
+	{
+		pArchivo=fopen("idArcade.csv","w");
+	}
+	fscanf(pArchivo,"%d",nuevoIdArcade);
+
+	printf("Nuevo ID: Arcade %d \n", *nuevoIdArcade);
+	return fclose(pArchivo);
+}
+
+
+int putIDArcade(int* nuevoIdArcade)
+{
+	FILE* pArchivo;
+	if (!((pArchivo=fopen("idArcade.csv","r"))==NULL))
+	{
+		pArchivo=fopen("idArcade.csv","w");
+		fprintf(pArchivo,"%d",*nuevoIdArcade);
+	}
+	//devuleve 0 si el archivo se cerro correctamente
+	return fclose(pArchivo);
+}

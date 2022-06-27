@@ -15,20 +15,13 @@ Juego* Juego_new()
 
 Juego* Juego_newParametros(char* juegoIDStr,char* juegoNombreStr ,char* juegoEmpresaStr, char* juegoGeneroStr)
 {
-	int auxTipoSalon = -1;
 	Juego* this = Juego_new();
 	if (this != NULL)
 	{
-		/*
-		 * int juegoId;
-			char juegoNombre[LEN_NOMBREJUEGO];
-			char juegoEmpresa[LEN_EMPRESA];
-			char juegoGenero[LEN_GENERO];
-		 */
-		if(Juego_setjuegoIdTxt(this, juegoIDStr) == -1 ||
-		   Juego_setjuegoNombre(this, juegoNombreStr) == -1  ||
-		   Juego_setjuegoEmpresa(this, juegoEmpresaStr) == -1 ||
-		   Juego_setjuegoGenero(this, juegoGeneroStr) == -1)
+		if(Juego_setJuegoIdTxt(this, juegoIDStr) == -1 ||
+		   Juego_setJuegoNombre(this, juegoNombreStr) == -1  ||
+		   Juego_setJuegoEmpresa(this, juegoEmpresaStr) == -1 ||
+		   Juego_setGeneroTxt(this, juegoGeneroStr) == -1)
 		{
 		   Juego_delete(this);
 		   this = NULL;
@@ -67,7 +60,7 @@ int Juego_getJuego_Id(Juego* this,int* id)
 	return retorno;
 }
 
-int Juego_setjuegoIdTxt(Juego* this,char* id)
+int Juego_setJuegoIdTxt(Juego* this,char* id)
 {
 	int retorno = -1;
 	if(this != NULL && id != NULL )
@@ -81,7 +74,7 @@ int Juego_setjuegoIdTxt(Juego* this,char* id)
 	return retorno;
 }
 
-int Juego_getjuegoIdTxt(Juego* this,char* id)
+int Juego_getJuegoIdTxt(Juego* this,char* id)
 {
 	int retorno = -1;
 	if(this != NULL && id != NULL )
@@ -92,7 +85,7 @@ int Juego_getjuegoIdTxt(Juego* this,char* id)
 	return retorno;
 }
 
-int Juego_setjuegoNombre(Juego* this,char* nombre)
+int Juego_setJuegoNombre(Juego* this,char* nombre)
 {
 	int retorno = -1;
 	if(this != NULL && nombre != NULL)
@@ -114,7 +107,7 @@ int Juego_getJuegoNombre(Juego* this,char* nombre)
 }
 
 
-int Juego_setjuegoEmpresa(Juego* this,char* empresa)
+int Juego_setJuegoEmpresa(Juego* this,char* empresa)
 {
 	int retorno = -1;
 	if(this != NULL && empresa != NULL )
@@ -136,53 +129,80 @@ int Juego_getJuegoEmpresa(Juego* this,char* empresa)
 	return retorno;
 }
 
-int Juego_setjuegoGenero(Juego* this,char* genero)
+int Juego_setJuegoGenero(Juego* this,int genero)
 {
 	int retorno = -1;
-	if(this != NULL && genero != NULL )
+	if(this != NULL && genero >=0 )
 	{
-		strncpy(this->juegoGenero,genero,LEN_GENERO);
+		this->juegoGenero=genero;
 		retorno = 0;
 	}
 	return retorno;
 }
-int Juego_getjuegoGenero(Juego* this,char* genero)
+int Juego_getJuegoGenero(Juego* this,int* genero)
 {
 	int retorno = -1;
-	if(this != NULL && genero != NULL )
+	if(this != NULL && genero >=0 )
 	{
-		strncpy(genero,this->juegoGenero,LEN_GENERO);
+		*genero=this->juegoGenero;
 		retorno = 0;
 	}
 	return retorno;
 }
 
+int Juego_setGeneroTxt(Juego* this,char* genero)
+{
+	int retorno = -1;
+	if(this != NULL && genero != NULL )
+	{
+		if (esNumerica(genero, LEN_CHARJUEGOID))
+		{
+			this->juegoGenero=atoi(genero);
+			retorno = 0;
+		}
+	}
+	return retorno;
+}
 
+int Juego_getGeneroTxt(Juego* this,char* genero)
+{
+	int retorno = -1;
+	if(this != NULL && genero != NULL )
+	{
+		sprintf(genero,"%d",this->juegoGenero);
+		retorno = 0;
+	}
+	return retorno;
+}
 int Juego_printOneJuego(Juego* pJuego)
 {
 	int retorno = -1;
+	int genero;
+	char auxGenero[LEN_GENERO];
+	genero = pJuego->juegoGenero;
+	juego_obtenerValorGenero(genero, auxGenero);
 	if (pJuego != NULL)
 	{
-		printf("|%-5d|%-30s|%-30s|%-15s|\n",pJuego->juegoId, pJuego->juegoNombre,pJuego->juegoEmpresa, pJuego->juegoGenero);
+		printf("|%-5d|%-30s|%-30s|%-15s|\n",pJuego->juegoId, pJuego->juegoNombre,pJuego->juegoEmpresa, auxGenero);
 	}
 	return retorno;
 }
 
-int Juego_printOneJuegoFile(FILE* archivo, Juego* pSalon)
+int Juego_printOneJuegoFile(FILE* archivo, Juego* pJuego)
 {
 	int retorno = -1;
-	char auxId;
+	int auxId;
 	char auxNombre[LEN_NOMBREJUEGO];
 	char auxEmpresa[LEN_EMPRESA];
-	char auxGenero[LEN_GENERO];
-	if (pSalon != NULL && archivo != NULL)
+	int auxGenero;
+	if (pJuego != NULL && archivo != NULL)
 	{
-		if(!(Juego_getJuego_Id(pSalon, &auxId)) &&
-			!(Juego_getJuegoNombre(pSalon, auxNombre)) &&
-			!(Juego_getJuegoEmpresa(pSalon, auxEmpresa)) &&
-			!(Juego_getjuegoGenero(pSalon, auxGenero)))
+		if(!(Juego_getJuego_Id(pJuego, &auxId)) &&
+			!(Juego_getJuegoNombre(pJuego, auxNombre)) &&
+			!(Juego_getJuegoEmpresa(pJuego, auxEmpresa)) &&
+			!(Juego_getJuegoGenero(pJuego, &auxGenero)))
 		{
-			fprintf(archivo,"|%-5d|%-30s|%-30s|%-15s|\n",auxId, auxNombre,auxEmpresa,auxGenero);
+			fprintf(archivo,"%d,%s,%s,%d\n",auxId, auxNombre,auxEmpresa,auxGenero);
 		}
 		retorno = 0;
 	}
@@ -214,3 +234,54 @@ int Juego_mayor(void* item1,void* item2)
 	return retorno;
 }
 
+int Salon_validateGenero(char* generoStr)
+{
+	int retorno = -1;
+	if(strncmp(generoStr,"PLATAFORMA",LEN_GENERO)==0)
+			{
+				retorno = PLATAFORMA;
+			}
+			else
+			{
+				if(strncmp(generoStr,"LABERINTO",LEN_GENERO)==0)
+				{
+					retorno = LABERINTO;
+				}
+				else
+				{
+					if(strncpy(generoStr,"AVENTURA",LEN_GENERO)==0)
+					{
+						retorno = AVENTURA;
+					}
+					else
+					{
+						if(strncpy(generoStr,"OTRO",LEN_GENERO)==0)
+						{
+							retorno = OTRO;
+						}
+					}
+				}
+			}
+
+	return retorno;
+}
+
+
+void juego_obtenerValorGenero(int generoInt, char* generoStr)
+{
+	switch (generoInt)
+		{
+		case 0:
+			strncpy(generoStr,"PLATAFORMA",LEN_GENERO);
+			break;
+		case 1:
+			strncpy(generoStr,"LABERINTO",LEN_GENERO);
+			break;
+		case 2:
+			strncpy(generoStr,"AVENTURA",LEN_GENERO);
+			break;
+		case 3:
+			strncpy(generoStr,"OTRO",LEN_GENERO);
+			break;
+		}
+}

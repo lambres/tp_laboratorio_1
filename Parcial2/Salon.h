@@ -13,8 +13,8 @@
 #include "LinkedList.h"
 
 
-#define LEN_NOMBRE 50
-#define LEN_DIRECCION 50
+#define LEN_NOMBRE 20
+#define LEN_DIRECCION 20
 #define LEN_TIPOSALON 20
 #define LEN_CHARSALONID 5
 #define SHOPPING 1
@@ -47,12 +47,17 @@ int Salon_setSalon_Direccion(Salon* this,char* direccion);
 int Salon_getSalon_Direccion(Salon* this,char* direccion);
 
 int Salon_validateTipoSalon(char* tipoSalonStr);
-int Salon_getTipoSalonStr(int tipoSalon, char * tipoSalonStr);
-int Salon_setTipoSalonStr(Salon* this,char* tipoSalon);
+
+int Salon_getTipoSalonStr(Salon* this, char* tipoSalonStr);
+int Salon_setTipoSalonStr(Salon* this, char* tipoSalon);
+
+int Salon_setTipoSalon(Salon* this,int tipoSalon);
+
 
 int Salon_printOneSalon(Salon* pSalon);
 int Salon_printOneSalonFile(FILE* archivo, Salon* pSalon);
 
 int Salon_mayor(void* item1,void* item2);
+int salon_obtenerValorTipo(int tipoInt, char* tipoStr);
 
 #endif /* SALON_H_ */
