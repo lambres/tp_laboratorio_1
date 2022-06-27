@@ -1,13 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "Controller.h"
 #include "LinkedList.h"
+#include "menuSalon.h"
 #include "Salon.h"
 #include "Arcade.h"
 #include "Juego.h"
 #include "utn.h"
-#include "menuArcade.h"
 
 int getIDArcade(int* nuevoIdArcade);
 int putIDArcade(int* nuevoIdArcade);
@@ -19,13 +18,6 @@ void adminArcades(LinkedList* listaSalones, LinkedList* listaArcades, LinkedList
 	int opcion = 0;
 	while(opcion!=5)
 	{
-		#ifdef __linux__
-			LIMPIAR_CONSOLA
-		#elif _WIN32
-			LIMPIAR_CONSOLA
-		#elif __APPLE__
-			LIMPIAR_CONSOLA
-		#endif
 		printf("\n-------------- MENU ABM ARCADES --------------\n");
 		printf("1. INCORPORAR ARCADE\n");
 		printf("2. MODIFICAR ARCADE\n");
@@ -54,15 +46,19 @@ void adminArcades(LinkedList* listaSalones, LinkedList* listaArcades, LinkedList
 			}
 			break;
 		case 2:
+			if(controller_editArcade(listaArcades,listaJuegos)==1)
+			{
+				printf("No se pudo modificar el arcade\n");
+			}
 			break;
 		case 3:
-			if(controller_removeSalon(listaSalones , listaArcades) != 0)
+			if(controller_removeArcade(listaSalones , listaArcades, listaJuegos) == 1)
 			{
-				printf("No se pudo eliminar el salon\n");
+				printf("No se pudo eliminar el arcade\n");
 			}
 			break;
 		case 4:
-			if (controller_ListArcades(listaArcades)!=0)
+			if (controller_mostrarArcadeJuego(listaArcades, listaJuegos)==-1)
 			{
 				printf("No se pudo listar los arcades\n");
 			}

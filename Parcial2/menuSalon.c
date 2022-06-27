@@ -17,13 +17,6 @@ void adminSalones(LinkedList* listaSalones, LinkedList* listaArcades)
 	int opcion = 0;
 	while(opcion!=4)
 	{
-		#ifdef __linux__
-			LIMPIAR_CONSOLA
-		#elif _WIN32
-			LIMPIAR_CONSOLA
-		#elif __APPLE__
-			LIMPIAR_CONSOLA
-		#endif
 		printf("\n-------------- MENU ABM SALON --------------\n");
 		printf("1. ALTA DE SALON\n");
 		printf("2. ELIMINAR SALON\n");

@@ -373,7 +373,7 @@ int getString(char *string, int longitud)
 /// @return Retorna S o N según opcion ingresada
 unsigned int verifica(void) {
 	char letra;
-	printf("\nIngrese opcion...S/N?");
+	printf("\nConfirma? Ingrese opcion...S/N?");
 	#ifdef __linux__
 		LIMPIAR_BUFFER
 	#elif _WIN32

@@ -256,6 +256,8 @@ int controller_mostrarArcadeSalon(LinkedList* listaSalon, LinkedList* listaArcad
 	Arcade* pArcade = NULL;
 	Salon* pSalon = NULL;
 	Juego* pJuego = NULL;
+	printf("2.\tListar los arcade para mas de 2 jugadores, indicando ID de arcade, \n"
+					"\tcantidad de jugadores, nombre del juego, su genero y nombre del salon al que pertenece\n\n");
 	printf("| %-5s | %-5s | %-20s | %-20s | %-15s |\n","IDArc","Jug","Nombre Juego","Nombre Salon", "Genero");
 	for (i=0; i<ll_len(listaArcade);i++)
 	{
@@ -288,7 +290,269 @@ int controller_mostrarArcadeSalon(LinkedList* listaSalon, LinkedList* listaArcad
 	return retorno;
 }
 
+int controller_mostrarArcadeParaEliminar(LinkedList* listaSalon, LinkedList* listaArcade, LinkedList* listaJuego)
+{
+	int retorno = -1;
+	int i,j,k;
+	char auxNombreJuego[LEN_NOMBREJUEGO];
+	char auxNombreSalon[LEN_NOMBRE];
+	char auxGenero[LEN_GENERO];
+	int genero;
+	Arcade* pArcade = NULL;
+	Salon* pSalon = NULL;
+	Juego* pJuego = NULL;
+	printf("| %-5s | %-5s | %-20s | %-20s | %-15s |\n","IDArc","Jug","Nombre Juego","Nombre Salon", "Genero");
+	for (i=0; i<ll_len(listaArcade);i++)
+	{
+		pArcade = ll_get(listaArcade, i);
+		for(j=0;j<ll_len(listaSalon);j++)
+		{
+			pSalon  = ll_get(listaSalon,j);
+			if(pArcade->fkIdSalon == pSalon->Salon_id)
+			{
+				strncpy(auxNombreSalon,pSalon->Salon_nombre,LEN_NOMBRE);
+			}
+		}
+		for (k=0;k<ll_len(listaJuego);k++)
+		{
+			pJuego = ll_get(listaJuego,k);
+			if(pJuego->juegoId == pArcade->fkidJuego)
+			{
+				strncpy(auxNombreJuego,pJuego->juegoNombre,LEN_NOMBREJUEGO);
+				genero = pArcade->fkidJuego;
+				juego_obtenerValorGenero(genero, auxGenero);
+			}
+		}
+		printf("| %-5d | %-5d | %-20s | %-20s | %-15s |\n",pArcade->Arcade_id,pArcade->Arcade_cantJugadores,
+				auxNombreJuego, auxNombreSalon, auxGenero);
+		retorno = 0;
+	}
+	return retorno;
+}
 
+int controller_mostrarArcadeJuego(LinkedList* listaArcade, LinkedList* listaJuego)
+{
+	int retorno = -1;
+	int i,j;
+	char auxNombreJuego[LEN_NOMBREJUEGO];
+	char auxGenero[LEN_GENERO];
+	int genero;
+	char tipoSonido[LEN_TIPOSONIDO];
+	int auxTipoSonido;
+	Arcade* pArcade = NULL;
+	Juego* pJuego = NULL;
+
+	printf("|%-5s|%-30s|%-12s|%-15s|%-10s|%-20s|%-10s|\n","ID","NACIONALIDAD","TIPO SONIDO","CANT JUGADORES","CAPACIDAD","JUEGO","GENERO");
+
+	for (i=0; i<ll_len(listaArcade);i++)
+	{
+		pArcade = ll_get(listaArcade, i);
+		for (j=0;j<ll_len(listaJuego);j++)
+		{
+			pJuego = ll_get(listaJuego,j);
+			if(pJuego->juegoId == pArcade->fkidJuego)
+			{
+				strncpy(auxNombreJuego,pJuego->juegoNombre,LEN_NOMBREJUEGO);
+				genero = pJuego->juegoGenero;
+				juego_obtenerValorGenero(genero, auxGenero);
+			}
+		}
+		auxTipoSonido = pArcade->Arcade_tipoSonido;
+		if(arcade_obtenerValorTipoSonido(auxTipoSonido, tipoSonido)!=-1)
+		printf("|%-5d|%-30s|%-12s|%-15d|%-10d|%-20s|%-10s|\n",pArcade->Arcade_id,pArcade->Arcade_nacionaliad,tipoSonido,
+				pArcade->Arcade_cantJugadores,pArcade->Arcade_capacidad,auxNombreJuego, auxGenero);
+		retorno = 0;
+	}
+	return retorno;
+}
+
+
+
+/** \brief Alta de Salon
+ *
+ * \param path char*
+ * \param pSalon LinkedList*
+ * \return int -1 Si no se pudo dar de alta el Salon (ERROR)
+ *			0 si salio todo correcto (EXITO)
+ */
+/// @fn int controller_removePassenger(LinkedList*)
+/// @brief Elimina Salon
+///
+/// @param pListaSalon puntero a lista Salon
+/// @return
+int controller_removeSalon(LinkedList* pListaSalon, LinkedList* pListaArcade)
+{
+	int retorno = 1;
+	int auxId;
+	//int auxIndiceSalon;
+	//int auxIndiceArcade;
+	int i,j;
+	char respuesta;
+	Salon* thisSalon = NULL;
+	Arcade* thisArcade = NULL;
+	if (pListaSalon != NULL && pListaArcade != NULL)
+	{
+		controller_ListSalones(pListaSalon);
+		if(!utn_getNumeroInt(&auxId, "INGRESE ID A ELIMINAR", "ERROR", 0, 9999, 2))
+		{
+			for(i=0; i<ll_len(pListaSalon);i++)
+			{
+				thisSalon = ll_get(pListaSalon, i);
+				if(thisSalon!= NULL)
+				{
+					if(thisSalon->Salon_id == auxId)
+					{
+						respuesta = verifica();
+						if(respuesta=='S')
+						{
+							for(j=0;j<ll_len(pListaArcade);j++)
+							{
+								thisArcade=ll_get(pListaArcade,j);
+								if(thisArcade!=NULL)
+								{
+									if(thisArcade->fkIdSalon == auxId)
+									{
+										//auxIndiceArcade = ll_indexOf(pListaArcade, &j);
+										ll_remove(pListaArcade, j);
+									}
+								}
+							}
+							//auxIndiceSalon = ll_indexOf(pListaSalon,&i);
+							ll_remove(pListaSalon, i);
+							retorno = 0;
+						}
+					}
+				}
+			}
+		}
+	}
+	return retorno;
+}
+
+int controller_removeArcade(LinkedList* pListaSalon, LinkedList* pListaArcade, LinkedList* pListaJuegos)
+{
+	int retorno = 1;
+	int auxId;
+	int i,j;
+	char respuesta;
+	Arcade* thisArcade = NULL;
+	Juego* thisJuego = NULL;
+	if (pListaSalon != NULL && pListaArcade != NULL && pListaJuegos != NULL)
+	{
+		controller_mostrarArcadeParaEliminar(pListaSalon, pListaArcade, pListaJuegos);
+		if(!utn_getNumeroInt(&auxId, "INGRESE ID A ELIMINAR", "ERROR", 0, 9999, 2))
+		{
+			for(i=0; i<ll_len(pListaArcade);i++)
+			{
+				thisArcade = ll_get(pListaArcade, i);
+				if(thisArcade!= NULL)
+				{
+					if(thisArcade->Arcade_id == auxId)
+					{
+						respuesta = verifica();
+						if(respuesta=='S')
+						{
+							for(j=0;j<ll_len(pListaJuegos);j++)
+							{
+								thisJuego=ll_get(pListaJuegos,j);
+								if(thisJuego!=NULL)
+								{
+									if(thisJuego->juegoId == auxId)
+									{
+										//auxIndiceArcade = ll_indexOf(pListaArcade, &j);
+										ll_remove(pListaJuegos, j);
+									}
+								}
+							}
+							//auxIndiceSalon = ll_indexOf(pListaSalon,&i);
+							ll_remove(pListaArcade, i);
+							retorno = 0;
+						}
+					}
+				}
+			}
+		}
+	}
+	return retorno;
+}
+
+/// @fn int controller_ListSalones(LinkedList*)
+/// @brief Lista los salones pasados como parametro en la lista
+///
+/// @param pListaSalon puntero a la lista de salones
+/// @return 1 si hay error en parametros (ERROR) 0 si se pudo listar (EXITO)
+int controller_ListSalones(LinkedList* pListaSalon)
+{
+	int retorno = 1;
+	int i;
+	Salon* pSalon = NULL;
+	if (pListaSalon != NULL)
+	{
+		int cantidad = ll_len(pListaSalon);
+		printf("|%-5s|%-30s|%-30s|%-15s|\n","ID", "NOMBRE","DIRECCION","TIPO");
+		for (i=0; i< cantidad; i++)
+		{
+			pSalon = (Salon*) ll_get(pListaSalon, i);
+			Salon_printOneSalon(pSalon);
+		}
+		retorno = 0;
+	}
+	return retorno;
+}
+
+
+/// @fn int controller_ListSalones(LinkedList*)
+/// @brief Lista los salones pasados como parametro en la lista
+///
+/// @param pListaSalon puntero a la lista de salones
+/// @return 1 si hay error en parametros (ERROR) 0 si se pudo listar (EXITO)
+int controller_ListArcades(LinkedList* pListaArcade)
+{
+	int retorno = 1;
+	int i;
+	Arcade* pArcade = NULL;
+	if (pListaArcade != NULL)
+	{
+		int cantidad = ll_len(pListaArcade);
+		printf("|%-5s|%-30s|%-12s|%-15s|%-10s|%-10s|\n","ID","NACIONALIDAD","TIPO SONIDO","CANT JUGADORES","CAPACIDAD","ID JUEGO");
+		for (i=0; i< cantidad; i++)
+		{
+			pArcade = (Arcade*) ll_get(pListaArcade, i);
+			Arcade_printOne(pArcade);
+		}
+		retorno = 0;
+	}
+	return retorno;
+}
+
+/// @fn int controller_ListSalones(LinkedList*)
+/// @brief Lista los salones pasados como parametro en la lista
+///
+/// @param pListaSalon puntero a la lista de salones
+/// @return 1 si hay error en parametros (ERROR) 0 si se pudo listar (EXITO)
+int controller_ListJuegos(LinkedList* pListaJuegos)
+{
+	int retorno = 1;
+	int i;
+	Juego* pJuego = NULL;
+	if (pListaJuegos != NULL)
+	{
+		int cantidad = ll_len(pListaJuegos);
+		//idJuego,juegoNombre,juegoEmpresa,juegoGenero
+		printf("|%-5s|%-30s|%-30s|%-15s|\n","ID", "NOMBRE JUEGO","EMPRESA","GENERO");
+		for (i=0; i< cantidad; i++)
+		{
+			pJuego = (Juego*) ll_get(pListaJuegos, i);
+			Juego_printOneJuego(pJuego);
+		}
+		retorno = 0;
+	}
+	return retorno;
+}
+
+
+
+//------------------------ARCADES-------------------------------------
 
 
 /** \brief Alta de Salon
@@ -339,145 +603,6 @@ int controller_addSalon(LinkedList* pSalon, int idNuevo)
     return retorno;
 }
 
-/// @fn int controller_removePassenger(LinkedList*)
-/// @brief Elimina Salon
-///
-/// @param pListaSalon puntero a lista Salon
-/// @return
-int controller_removeSalon(LinkedList* pListaSalon, LinkedList* pListaArcade)
-{
-	int retorno = 1;
-	int auxId;
-	int auxIndiceSalon;
-	int auxIndiceArcade;
-	int i,j;
-	char respuesta;
-	Salon* thisSalon = NULL;
-	Arcade* thisArcade = NULL;
-	if (pListaSalon != NULL)
-	{
-		controller_ListSalones(pListaSalon);
-		if(!utn_getNumeroInt(&auxId, "INGRESE ID A ELIMINAR", "ERROR", 0, 9999, 2))
-		{
-			for(i=0; i<ll_len(pListaSalon);i++)
-			{
-				thisSalon = ll_get(pListaSalon, i);
-				if(thisSalon!= NULL)
-				{
-					if(thisSalon->Salon_id == auxId)
-					{
-						respuesta = verifica();
-						if(respuesta=='S')
-						{
-							for(j=0;j<ll_len(pListaArcade);j++)
-							{
-								thisArcade=ll_get(pListaArcade,j);
-								if(thisArcade!=NULL)
-								{
-									if(thisArcade->fkIdSalon == auxId)
-									{
-										auxIndiceArcade = ll_indexOf(pListaArcade, &j);
-										ll_remove(pListaArcade, j);
-									}
-								}
-							}
-							auxIndiceSalon = ll_indexOf(pListaSalon,&i);
-							ll_remove(pListaSalon, i);
-							retorno = 0;
-						}
-					}
-				}
-			}
-		}
-	}
-	return retorno;
-}
-
-
-/// @fn int controller_ListSalones(LinkedList*)
-/// @brief Lista los salones pasados como parametro en la lista
-///
-/// @param pListaSalon puntero a la lista de salones
-/// @return 1 si hay error en parametros (ERROR) 0 si se pudo listar (EXITO)
-int controller_ListSalones(LinkedList* pListaSalon)
-{
-	int retorno = 1;
-	int i;
-	Salon* pSalon = NULL;
-	if (pListaSalon != NULL)
-	{
-		int cantidad = ll_len(pListaSalon);
-		printf("|%-5s|%-30s|%-30s|%-15s|\n","ID", "NOMBRE","DIRECCION","TIPO");
-		for (i=0; i< cantidad; i++)
-		{
-			pSalon = (Salon*) ll_get(pListaSalon, i);
-			Salon_printOneSalon(pSalon);
-		}
-		retorno = 0;
-	}
-	return retorno;
-}
-
-
-/// @fn int controller_ListSalones(LinkedList*)
-/// @brief Lista los salones pasados como parametro en la lista
-///
-/// @param pListaSalon puntero a la lista de salones
-/// @return 1 si hay error en parametros (ERROR) 0 si se pudo listar (EXITO)
-int controller_ListArcades(LinkedList* pListaArcade)
-{
-	int retorno = 1;
-	int i;
-	Arcade* pArcade = NULL;
-	if (pListaArcade != NULL)
-	{
-		int cantidad = ll_len(pListaArcade);
-		printf("|%-5s|%-30s|%-12s|%-15s|%-10s|%-10s|%-10s|\n","ID","NACIONALIDAD","TIPO SONIDO","CANT JUGADORES","CAPACIDAD","ID SALON","ID JUEGO");
-		for (i=0; i< cantidad; i++)
-		{
-			pArcade = (Arcade*) ll_get(pListaArcade, i);
-			Arcade_printOne(pArcade);
-		}
-		retorno = 0;
-	}
-	return retorno;
-}
-
-/// @fn int controller_ListSalones(LinkedList*)
-/// @brief Lista los salones pasados como parametro en la lista
-///
-/// @param pListaSalon puntero a la lista de salones
-/// @return 1 si hay error en parametros (ERROR) 0 si se pudo listar (EXITO)
-int controller_ListJuegos(LinkedList* pListaJuegos)
-{
-	int retorno = 1;
-	int i;
-	Juego* pJuego = NULL;
-	if (pListaJuegos != NULL)
-	{
-		int cantidad = ll_len(pListaJuegos);
-		//idJuego,juegoNombre,juegoEmpresa,juegoGenero
-		printf("|%-10s|%-30s|%-30s|%-30s|\n","ID JUEGO", "NOMBRE JUEGO","EMPRESA","GENERO");
-		for (i=0; i< cantidad; i++)
-		{
-			pJuego = (Juego*) ll_get(pListaJuegos, i);
-			Juego_printOneJuego(pJuego);
-		}
-		retorno = 0;
-	}
-	return retorno;
-}
-
-//------------------------ARCADES-------------------------------------
-
-
-/** \brief Alta de Salon
- *
- * \param path char*
- * \param pSalon LinkedList*
- * \return int -1 Si no se pudo dar de alta el Salon (ERROR)
- *			0 si salio todo correcto (EXITO)
- */
 int controller_addArcade(LinkedList* pSalon, LinkedList* pArcade, LinkedList* pJuego, int idNuevo)
 {
 	int retorno = -1;
@@ -492,178 +617,222 @@ int controller_addArcade(LinkedList* pSalon, LinkedList* pArcade, LinkedList* pJ
 	int auxIdJuego;
 	Salon* auxSalon = NULL;
 	Juego* auxJuego = NULL;
-	if (aux!=NULL && idNuevo >= 0)
+	if(pSalon != NULL && pArcade != NULL && pJuego != NULL && idNuevo >=0)
 	{
-		id = idNuevo;
-		if(!(utn_getTexto(auxNacionalidad, LEN_NACIONALIDAD, "NACIONALIDAD:", "ERROR REINTENTAR", 2)) &&
-			!(utn_getNumeroInt(&tipoSonido, "TIPO: 0.- STEREO 1.- MONO:", "ERROR", 0, 1, 2)) &&
-			!(utn_getNumeroInt(&auxCantJugadores, "CANT. JUGADORES (1-4:)", "ERROR REINTENTE", 1, 4, 2)) &&
-			!(utn_getNumeroInt(&auxCapacidad, "CAPACIDAD: (200-300)", "ERROR", 200, 300, 2)))
+		if (aux!=NULL)
 		{
-			Arcade_setArcade_Id(aux, id);
-			Arcade_setNacionalidad(aux, auxNacionalidad);
-			Arcade_setTipoSonido(aux, tipoSonido);
-			Arcade_setCantJugadores(aux, auxCantJugadores);
-			Arcade_setCapacidad(aux, auxCapacidad);
-			for(i=0;i<ll_len(pSalon);i++)
+			id = idNuevo;
+			if(!(utn_getTexto(auxNacionalidad, LEN_NACIONALIDAD, "NACIONALIDAD:", "ERROR REINTENTAR", 2)) &&
+				!(utn_getNumeroInt(&tipoSonido, "TIPO: 0.- STEREO 1.- MONO:", "ERROR", 0, 1, 2)) &&
+				!(utn_getNumeroInt(&auxCantJugadores, "CANT. JUGADORES (1-4:)", "ERROR REINTENTE", 1, 4, 2)) &&
+				!(utn_getNumeroInt(&auxCapacidad, "CAPACIDAD: (200-300)", "ERROR", 200, 300, 2)))
 			{
-				controller_ListSalones(pSalon);
-			}
-			if(!utn_getNumeroInt(&auxIdSalon, "INGRESE ID SALON", "ERROR", 0, 9999, 2))
-			{
-				for(i=0; i<ll_len(pSalon);i++)
+				Arcade_setArcade_Id(aux, id);
+				Arcade_setNacionalidad(aux, auxNacionalidad);
+				Arcade_setTipoSonido(aux, tipoSonido);
+				Arcade_setCantJugadores(aux, auxCantJugadores);
+				Arcade_setCapacidad(aux, auxCapacidad);
+				for(i=0;i<ll_len(pSalon);i++)
 				{
-					auxSalon = ll_get(pSalon, i);
-					if(auxSalon!= NULL)
+					controller_ListSalones(pSalon);
+				}
+				if(!utn_getNumeroInt(&auxIdSalon, "INGRESE ID SALON", "ERROR", 0, 9999, 2))
+				{
+					for(i=0; i<ll_len(pSalon);i++)
 					{
-						if(auxSalon->Salon_id == auxIdSalon)
+						auxSalon = ll_get(pSalon, i);
+						if(auxSalon!= NULL)
 						{
-							Arcade_setfkIdSalon(aux, auxIdSalon);
-							break;
+							if(auxSalon->Salon_id == auxIdSalon)
+							{
+								Arcade_setfkIdSalon(aux, auxIdSalon);
+								break;
+							}
 						}
 					}
 				}
-			}
 
-			for(j=0;j<ll_len(pJuego);j++)
-			{
-				controller_ListJuegos(pJuego);
-			}
-			if(!utn_getNumeroInt(&auxIdJuego, "INGRESE ID JUEGO", "ERROR", 0, 9999, 2))
-			{
-				for(j=0; j<ll_len(pJuego);j++)
+				for(j=0;j<ll_len(pJuego);j++)
 				{
-					auxJuego = ll_get(pJuego, i);
-					if(auxJuego!= NULL)
+					controller_ListJuegos(pJuego);
+				}
+				if(!utn_getNumeroInt(&auxIdJuego, "INGRESE ID JUEGO", "ERROR", 0, 9999, 2))
+				{
+					for(j=0; j<ll_len(pJuego);j++)
 					{
-						if(auxJuego->juegoId == auxIdJuego)
+						auxJuego = ll_get(pJuego, i);
+						if(auxJuego!= NULL)
 						{
-							Arcade_setfkIdJuego(aux, auxIdJuego);
-							break;
+							if(auxJuego->juegoId == auxIdJuego)
+							{
+								Arcade_setfkIdJuego(aux, auxIdJuego);
+								break;
+							}
 						}
 					}
 				}
+				ll_add(pArcade, aux);
+				retorno = 0;
 			}
-			ll_add(pArcade, aux);
-			retorno = 0;
+			if(retorno == 0)
+			{
+				puts("Arcade dado de alta:\n");
+				printf("|%-10s|%-30s|%-30s|%-30s|\n","ID JUEGO", "NOMBRE JUEGO","EMPRESA","GENERO");
+				Arcade_printOne(aux);
+			}
 		}
-		if(retorno == 0)
+		else
 		{
-			puts("Arcade dado de alta:\n");
-			printf("|%-10s|%-30s|%-30s|%-30s|\n","ID JUEGO", "NOMBRE JUEGO","EMPRESA","GENERO");
-			Arcade_printOne(aux);
+			Arcade_delete(aux);
 		}
 	}
-	else
+	return retorno;
+}
+
+int controller_addJuego(LinkedList* pJuego, int idNuevo)
+{
+	int retorno = -1;
+	Juego* this = Juego_new();
+	int id = -1;
+	char auxJuegoNombre[LEN_NOMBREJUEGO];
+	char auxJuegoEmpresa[LEN_EMPRESA];
+	int auxJuegoGenero;
+	if(pJuego != NULL && idNuevo >=0)
 	{
-		Arcade_delete(aux);
+		if (this!=NULL && idNuevo >= 0)
+		{
+			id = idNuevo;
+			if(!(utn_getTexto(auxJuegoNombre, LEN_NOMBREJUEGO, "NOMBRE JUEGO:", "ERROR REINTENTAR", 2)) &&
+				!(utn_getTexto(auxJuegoEmpresa, LEN_EMPRESA, "NOMBRE EMPRESA:", "ERROR REINTENTAR", 2)) &&
+				!(utn_getNumeroInt(&auxJuegoGenero, "GENERO \n0: PLATAFORMA\n1: LABERINTO\n2: AVENTURA\n3: OTRO", "ERROR REINTENTE", 0, 3, 2)))
+			{
+				Juego_setJuego_Id(this, id);
+				Juego_setJuegoNombre(this, auxJuegoNombre);
+				Juego_setJuegoEmpresa(this, auxJuegoEmpresa);
+				Juego_setJuegoGenero(this, auxJuegoGenero);
+				ll_add(pJuego, this);
+				retorno = 0;
+			}
+			if(retorno == 0)
+			{
+				puts("Juego dado de alta:\n");
+				printf("|%-10s|%-30s|%-30s|%-30s|\n","ID JUEGO", "NOMBRE JUEGO","EMPRESA","GENERO");
+				Juego_printOneJuego(this);
+			}
+		}
+		else
+		{
+			Juego_delete(this);
+		}
 	}
     return retorno;
 }
 
 
-//
-///** \brief Modificar datos de pasajero
-// *
-// * \param path char*
-// * \param pArrayListPassenger LinkedList*
-// * \return int
-// *
-// */
-//int controller_editSalon(LinkedList* pArrayListPassenger)
-//{
-//	int retorno = 1;
-//	int i;
-//	int auxId;
-//	int opc;
-//	char nombre[LEN_NOMBRE];
-//	char apellido[LEN_APELLIDO];
-//	float precio;
-//	char codigoVuelo[LEN_CODVUELO];
-//	char tipoPasajero[LEN_TIPOSALON];
-//	char estadoVuelo[LEN_ESTADOVUELO];
-//	Arcade* this = NULL;
-//	if (pArrayListPassenger != NULL)
-//	{
-//		if(!utn_getNumeroInt(&auxId, "INGRESE ID A MODIFICAR", "ERROR", 0, 9999, 2))
-//		{
-//			int cantidad = ll_len(pArrayListPassenger);
-//			for (i=0; i< cantidad; i++)
-//			{
-//				this = (Arcade*) ll_get(pArrayListPassenger, i);
-//				//Passenger_printOne(pPasajero);
-//				if(auxId==this->id)
-//				{
-//					printf("%-10s|%-20s|%-20s|%-11s|%-16s|%-15s|%-15s|\n","Indice","Nombre","Apellido","Precio","Cod. Vuelo","TipoPasajero","Est. Vuelo");
-//					ll_get(pArrayListPassenger, i);
-//					Juego_printOneJuego(this);
-//					if(!utn_getNumeroInt(&opc, "DATO A MODIF:\n1: NOMBRE\n2: APELLIDO\n3: PRECIO\n4: COD. VUELO\n5: TIPO PASAJERO\n6: EST. VUELO\n", "ERROR", 1, 6, 2))
-//					{
-//						switch(opc)
-//						{
-//						case 1:
-//							if(!utn_getNombre(nombre, LEN_NOMBRE, "NUEVO NOMBRE", "ERROR", 2))
-//							{
-//								if(Salon_setSalon_Nombre(this, nombre)==-1)
-//								{
-//									printf("ERROR \nNo se pudo editar el campo\n");
-//								}
-//							}
-//							break;
-//						case 2:
-//							if(!utn_getNombre(apellido, LEN_APELLIDO, "NUEVO APELLIDO", "ERROR", 2))
-//							{
-//								if(Juego_setjuegoEmpresa(this, apellido)==-1)
-//								{
-//									printf("ERROR \nNo se pudo editar el campo\n");
-//								}
-//							}
-//							break;
-//						case 3:
-//							if(!utn_getNumeroFloat(&precio, "NUEVO PRECIO", "ERROR", 0, 99999, 2))
-//							{
-//								if(Salon_setPrecio(this, precio)==-1)
-//								{
-//									printf("ERROR \nNo se pudo editar el campo\n");
-//								}
-//							}
-//							break;
-//						case 4:
-//							if(!utn_getTexto(codigoVuelo, LEN_CODVUELO, "NUEVO CODIGO", "ERROR", 2))
-//							{
-//								if(Salon_setCodigoVuelo(this, codigoVuelo)==-1)
-//								{
-//									printf("ERROR \nNo se pudo editar el campo\n");
-//								}
-//							}
-//							break;
-//						case 5:
-//							if(!utn_getTexto(tipoPasajero, LEN_TIPOSALON, "NUEVO TIPO PASAJERO", "ERROR", 2))
-//							{
-//								if(Salon_setTipoSalonStr(this, tipoPasajero)==-1)
-//								{
-//									printf("ERROR \nNo se pudo editar el campo\n");
-//								}
-//							}
-//							break;
-//						case 6:
-//							if(!(utn_getTexto(estadoVuelo, LEN_ESTADOVUELO, "NUEVO ESTADO VUELO (Aterrizado/En Horario/En Vuelo/Demorado: ", "ERROR", 2)))
-//							{
-//								if(Salon_setEstadoVuelo(this, estadoVuelo)==-1)
-//								{
-//									printf("ERROR \nNo se pudo editar el campo\n");
-//								}
-//							}
-//							break;
-//						}
-//					}
-//					retorno = 0;
-//				}
-//			}
-//		}
-//	}
-//	return retorno;
-//}
+
+/** \brief Modificar datos de Arcade
+ *
+ * \param path char*
+ * \param pArrayListPassenger LinkedList*
+ * \return int
+ *
+ */
+int controller_editArcade(LinkedList* listaArcade, LinkedList* listaJuegos)
+{
+	int retorno = 1;
+	int i,j;
+	int auxId;
+	int opc;
+	char auxNacionalidad[LEN_NACIONALIDAD];
+	int auxTipoSonido;
+	int auxCantJugadores;
+	int auxCapacidad;
+	int auxJuego;
+	Arcade* this = NULL;
+	if (listaArcade != NULL && listaJuegos != NULL)
+	{
+		controller_ListArcades(listaArcade);
+		if(!utn_getNumeroInt(&auxId, "INGRESE ID A MODIFICAR", "ERROR", 0, 9999, 2))
+		{
+			int cantidad = ll_len(listaArcade);
+			for (i=0; i< cantidad; i++)
+			{
+				this = (Arcade*) ll_get(listaArcade, i);
+				if(auxId==this->Arcade_id)
+				{
+					printf("|%-5s|%-30s|%-12s|%-15s|%-10s|%-10s|\n","ID","NACIONALIDAD","TIPO SONIDO","CANT JUGADORES","CAPACIDAD","ID JUEGO");
+					ll_get(listaArcade, i);
+					Arcade_printOne(this);
+					if(!utn_getNumeroInt(&opc, "DATO A MODIF:\n1: NACIONALIDAD\n2: TIPO SONIDO\n3: CANT JUGADORES\n4: CAPACIDAD\n5: ID JUEGO\n", "ERROR", 1, 5, 2))
+					{
+						switch(opc)
+						{
+						case 1:
+							if(!utn_getNombre(auxNacionalidad, LEN_NACIONALIDAD, "NUEVA NACIONALIDAD", "ERROR", 2))
+							{
+								if(Arcade_setNacionalidad(this, auxNacionalidad)==-1)
+								{
+									printf("ERROR \nNo se pudo editar el campo nacionalidad\n");
+								}
+							}
+							break;
+						case 2:
+							if(!utn_getNumeroInt(&auxTipoSonido, "TIPO SONIDO (0:STEREO 1:MONO)", "ERROR REINGRESE", 0, 1, 2))
+							{
+								if(Arcade_setTipoSonido(this, auxTipoSonido)==-1)
+								{
+									printf("ERROR \nNo se pudo editar tipo sonido\n");
+								}
+							}
+							break;
+						case 3:
+							if(!utn_getNumeroInt(&auxCantJugadores, "CANT JUGADORES (1-4)", "ERROR REINGRESE", 1, 4, 2))
+							{
+								if(Arcade_setCantJugadores(this, auxCantJugadores)==-1)
+								{
+									printf("ERROR \nNo se pudo editar cantidad de jugadores\n");
+								}
+							}
+							break;
+						case 4:
+							if(!utn_getNumeroInt(&auxCapacidad, "CAPACIDAD (200-300)", "ERROR REINGRESE", 200, 300, 2))
+							{
+								if(Arcade_setCapacidad(this, auxCapacidad)==-1)
+								{
+									printf("ERROR \nNo se pudo editar capacidad\n");
+								}
+							}
+							break;
+						case 5:
+							controller_ListJuegos(listaJuegos);
+							if(!utn_getNumeroInt(&auxJuego, "ID JUEGO", "ERROR REINGRESE", 1, 9999, 2))
+							{
+								Juego* thisJuego = NULL;
+								for(j=0; j<ll_len(listaJuegos);j++)
+								{
+									thisJuego = ll_get(listaJuegos,j);
+									if(thisJuego!=NULL)
+									{
+										if(thisJuego->juegoId==auxJuego)
+										{
+											if(Arcade_setfkIdJuego(this, auxJuego)==-1)
+											{
+												printf("ERROR \nNo se pudo editar ID Juego\n");
+											}
+										}
+									}
+								}
+							}
+							break;
+						}
+					}
+					retorno = 0;
+				}
+			}
+		}
+	}
+	return retorno;
+}
 //
 //
 ///** \brief Ordenar pasajeros

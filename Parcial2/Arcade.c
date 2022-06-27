@@ -319,8 +319,9 @@ int Arcade_printOne(Arcade* pArcade)
 		auxTipoSonido = pArcade->Arcade_tipoSonido;
 		if(!arcade_obtenerValorTipoSonido(auxTipoSonido, tipoSonido))
 		{
-			printf("|%-5d|%-30s|%-8s|%4d|%4d|\n",pArcade->Arcade_id, pArcade->Arcade_nacionaliad,
-					tipoSonido, pArcade->Arcade_cantJugadores, pArcade->Arcade_capacidad);
+			//,"ID","NACIONALIDAD","TIPO SONIDO","CANT JUGADORES","CAPACIDAD","ID SALON","ID JUEGO");
+			printf("|%-5d|%-30s|%-12s|%-15d|%-10d|%-10d|\n",pArcade->Arcade_id, pArcade->Arcade_nacionaliad,
+					tipoSonido, pArcade->Arcade_cantJugadores, pArcade->Arcade_capacidad, pArcade->fkidJuego);
 		}
 	}
 	return retorno;
@@ -383,7 +384,7 @@ int Arcade_mayor(void* item1,void* item2)
 int arcade_obtenerValorTipoSonido(int tipoInt, char* tipoStr)
 {
 	int retorno = -1;
-	if (tipoInt >= 1 && tipoInt <= 2 && tipoStr != NULL)
+	if (tipoInt >= 0 && tipoInt <= 1 && tipoStr != NULL)
 	{
 		switch (tipoInt)
 			{
