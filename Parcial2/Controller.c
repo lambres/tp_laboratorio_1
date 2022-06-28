@@ -870,3 +870,17 @@ int controller_sortJuego(LinkedList* pListaJuego)
     return retorno;
 }
 
+
+int controller_FilterCountry(LinkedList* pListaJuego, LinkedList* auxLista, char* country)
+{
+	int retorno = -1;
+	if(pListaJuego != NULL && auxLista != NULL && country != NULL)
+	{
+		if(!ll_filter(pListaJuego,auxLista, Arcade_filterArgentina, country))
+		{
+			retorno = 0;
+		}
+	}
+    return retorno;
+}
+

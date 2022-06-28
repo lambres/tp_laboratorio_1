@@ -285,3 +285,6 @@ void juego_obtenerValorGenero(int generoInt, char* generoStr)
 			break;
 		}
 }
+
+
+

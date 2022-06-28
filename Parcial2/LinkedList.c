@@ -554,3 +554,25 @@ int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
 	return returnAux;
 }
 
+
+
+int ll_filter(LinkedList* this,LinkedList* filterList, int (*pFunc)(void*, char*), char* pais)
+{
+	int returnAux =-1;
+	int i;
+	void* aux = NULL;
+	int limite = ll_len(this);
+	if(this != NULL && filterList != NULL && pFunc != NULL && pais != NULL)
+	{
+		for( i = 0; i < limite; i++)
+		{
+			aux = ll_get(this,i);
+			if((pFunc(aux,pais) == 0))
+			{
+				ll_add(filterList, aux);
+			}
+		}
+		returnAux = 0;
+	}
+	return returnAux;
+}

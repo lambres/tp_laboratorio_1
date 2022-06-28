@@ -458,3 +458,24 @@ int arcade_obtenerValorTipoSonido(int tipoInt, char* tipoStr)
 	return retorno;
 }
 
+
+
+int Arcade_filterArgentina(void* item1, char* pais)
+{
+	int retorno = -1;
+	Arcade* this;
+	this = (Arcade*) item1;
+	char auxNacionalidad[LEN_NACIONALIDAD];
+	if(item1 != NULL && pais != NULL)
+	{
+		if(!Arcade_getNacionalidad(this,auxNacionalidad))
+		{
+			if(strncmp(auxNacionalidad,pais,LEN_NACIONALIDAD)==0)
+			{
+				retorno = 0;
+			}
+		}
+	}
+	return retorno;
+}
+

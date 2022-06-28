@@ -13,7 +13,7 @@ void adminInformes(LinkedList* listaSalon,LinkedList* listaArcade,LinkedList* li
 {
 
 	int opcion = 0;
-	while(opcion!=8)
+	while(opcion!=9)
 	{
 		printf("\n\n-------------- MENU INFORMES --------------\n\n");
 		printf("1.\tListar los salones con mas de 4 arcade. Indicando ID de salon, nombre,\n "
@@ -33,8 +33,9 @@ void adminInformes(LinkedList* listaSalon,LinkedList* listaArcade,LinkedList* li
 		printf("7.\tListar los arcades que cumplan con sonido MONO y el genero de su juego sea \n"
 				"\tPLATAFORMA, informando nombre de juego, genero y cantidad de jugadores que \n"
 				"\tsoporta el arcade. El listado debera estar ordenado por nombre de juego.\n\n");
-		printf("8.\tSalir\n");
-		utn_getNumeroInt(&opcion, "Seleccione opcion", "Error reintente", 1, 8, 2);
+		printf("8.\tFltras Arcades nacionalidad \"ARGENTINA\" \n");
+		printf("9.\tSalir\n");
+		utn_getNumeroInt(&opcion, "Seleccione opcion", "Error reintente", 1, 9, 2);
 
 		switch(opcion)
 		{
@@ -81,6 +82,12 @@ void adminInformes(LinkedList* listaSalon,LinkedList* listaArcade,LinkedList* li
 			}
 			break;
 		case 8:
+			if(ReporteH(listaArcade))
+			{
+				printf("No se pudo listar\n");
+			}
+			break;
+		case 9:
 			break;
 		}
 	}
@@ -492,4 +499,25 @@ int ReporteG(LinkedList* listaArcade, LinkedList* listaJuegos)
 
 }
 
+int ReporteH(LinkedList* listaArcade)
+{
+    LinkedList* auxLista = ll_newLinkedList();
 
+	int retorno = -1;
+	int i;
+	Arcade* this = NULL;
+	if(listaArcade != NULL)
+	{
+		printf("|%-5s|%-30s|%-12s|%-15s|%-10s|%-10s|\n","ID","NACIONALIDAD","TIPO SONIDO", "CANT JUGADORES", "CAPACIDAD", "JUEGO");
+		if(!controller_FilterCountry(listaArcade, auxLista, "ARGENTINA"))
+		{
+			for(i=0; i<ll_len(auxLista);i++)
+			{
+				this = ll_get(auxLista, i);
+				Arcade_printOne(this);
+			}
+			retorno = 0;
+		}
+	}
+	return retorno;
+}

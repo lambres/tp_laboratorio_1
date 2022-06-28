@@ -59,4 +59,5 @@ int Juego_printOneJuegoFile(FILE* archivo, Juego* pSalon);
 int Juego_mayor(void* item1,void* item2);
 void juego_obtenerValorGenero(int generoInt, char* generoStr);
 
+
 #endif /* SALON_H_ */

@@ -15,5 +15,6 @@ int ReporteD(LinkedList* listaSalon, LinkedList* listaArcade, LinkedList* listaJ
 int ReporteE(LinkedList* listaSalon, LinkedList* listaArcade, LinkedList* listaJuego);
 int ReporteF(LinkedList* listaSalon, LinkedList* listaArcade);
 int ReporteG( LinkedList* listaArcade, LinkedList* listaJuego);
+int ReporteH(LinkedList* listaArcade);
 
 #endif /* MENUINFORMES_H_ */

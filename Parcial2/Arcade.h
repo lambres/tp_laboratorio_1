@@ -75,5 +75,6 @@ int Arcade_printOneFile(FILE* archivo, Arcade* pSalon);
 
 int Arcade_mayor(void* item1,void* item2);
 int arcade_obtenerValorTipoSonido(int tipoInt, char* tipoStr);
+int Arcade_filterArgentina(void* item1, char* pais);
 
 #endif /* SALON_H_ */

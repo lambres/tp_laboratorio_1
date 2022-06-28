@@ -27,4 +27,5 @@ int controller_addJuego(LinkedList* pJuego, int idNuevo);
 
 int controller_sortArcade(LinkedList* pListaArcade);
 int controller_sortJuego(LinkedList* pListaJuego);
+int controller_FilterCountry(LinkedList* pListaJuego, LinkedList* auxLista, char* country);
 
