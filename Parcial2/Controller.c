@@ -242,53 +242,6 @@ int controller_saveFiles(LinkedList* listaSalon, LinkedList* listaArcade , Linke
 	return retorno;
 }
 
-//B) Listar los arcade para más de 2 jugadores, indicando ID
-//de arcade, cantidad de jugadores, nombre del juego, su
-//género y nombre del salón al que pertenece.
-int controller_mostrarArcadeSalon(LinkedList* listaSalon, LinkedList* listaArcade, LinkedList* listaJuego)
-{
-	int retorno = -1;
-	int i,j,k;
-	char auxNombreJuego[LEN_NOMBREJUEGO];
-	char auxNombreSalon[LEN_NOMBRE];
-	char auxGenero[LEN_GENERO];
-	int genero;
-	Arcade* pArcade = NULL;
-	Salon* pSalon = NULL;
-	Juego* pJuego = NULL;
-	printf("2.\tListar los arcade para mas de 2 jugadores, indicando ID de arcade, \n"
-					"\tcantidad de jugadores, nombre del juego, su genero y nombre del salon al que pertenece\n\n");
-	printf("| %-5s | %-5s | %-20s | %-20s | %-15s |\n","IDArc","Jug","Nombre Juego","Nombre Salon", "Genero");
-	for (i=0; i<ll_len(listaArcade);i++)
-	{
-		pArcade = ll_get(listaArcade, i);
-		if(pArcade->Arcade_cantJugadores >= 2)
-		{
-			for(j=0;j<ll_len(listaSalon);j++)
-			{
-				pSalon  = ll_get(listaSalon,j);
-				if(pArcade->fkIdSalon == pSalon->Salon_id)
-				{
-					strncpy(auxNombreSalon,pSalon->Salon_nombre,LEN_NOMBRE);
-				}
-			}
-			for (k=0;k<ll_len(listaJuego);k++)
-			{
-				pJuego = ll_get(listaJuego,k);
-				if(pJuego->juegoId == pArcade->fkidJuego)
-				{
-					strncpy(auxNombreJuego,pJuego->juegoNombre,LEN_NOMBREJUEGO);
-					genero = pArcade->fkidJuego;
-					juego_obtenerValorGenero(genero, auxGenero);
-				}
-			}
-			printf("| %-5d | %-5d | %-20s | %-20s | %-15s |\n",pArcade->Arcade_id,pArcade->Arcade_cantJugadores,
-					auxNombreJuego, auxNombreSalon, auxGenero);
-		}
-		retorno = 0;
-	}
-	return retorno;
-}
 
 int controller_mostrarArcadeParaEliminar(LinkedList* listaSalon, LinkedList* listaArcade, LinkedList* listaJuego)
 {
@@ -833,24 +786,24 @@ int controller_editArcade(LinkedList* listaArcade, LinkedList* listaJuegos)
 	}
 	return retorno;
 }
-//
-//
-///** \brief Ordenar pasajeros
-// *
-// * \param path char*
-// * \param pArrayListPassenger LinkedList*
-// * \return int
-// *
-// */
-//int controller_sortPassenger(LinkedList* pArrayListPassenger)
-//{
-//	int retorno = -1;
-//	if(pArrayListPassenger != NULL)
-//	{
-//		ll_sort(pArrayListPassenger, Arcade_mayor, 0);
-//		retorno = 0;
-//	}
-//    return retorno;
-//}
-//
-//
+
+
+/** \brief Ordenar Arcade
+ *
+ * \param path char*
+ * \param pListaArcade LinkedList*
+ * \return int
+ *
+ */
+int controller_sortArcade(LinkedList* pListaArcade)
+{
+	int retorno = -1;
+	if(pListaArcade != NULL)
+	{
+		ll_sort(pListaArcade, Arcade_mayor, 0);
+		retorno = 0;
+	}
+    return retorno;
+}
+
+

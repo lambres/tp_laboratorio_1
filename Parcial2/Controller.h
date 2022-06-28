@@ -9,7 +9,7 @@ int controller_saveJuegoAsText(char* path , LinkedList* pArrayList);
 int controller_saveFiles(LinkedList* listaSalon, LinkedList* listaArcade , LinkedList* listaJuego);
 
 
-int controller_mostrarArcadeSalon(LinkedList* listaSalon, LinkedList* listaArcade, LinkedList* listaJuego);
+//int controller_mostrarArcadeSalon(LinkedList* listaSalon, LinkedList* listaArcade, LinkedList* listaJuego);
 int controller_mostrarArcadeJuego(LinkedList* listaArcade, LinkedList* listaJuego);
 int controller_mostrarArcadeParaEliminar(LinkedList* listaSalon, LinkedList* listaArcade, LinkedList* listaJuego);
 
@@ -24,10 +24,5 @@ int controller_removeArcade(LinkedList* pListaSalon, LinkedList* pListaArcade, L
 
 int controller_ListJuegos(LinkedList* pListaJuegos);
 int controller_addJuego(LinkedList* pJuego, int idNuevo);
+int controller_sortArcade(LinkedList* pListaArcade);
 
-/*
-int controller_editSalon(LinkedList* pArrayList);
-int controller_sortSalon(LinkedList* pArrayList);
-int controller_saveAsText(char* path , LinkedList* pArrayList);
-
-*/

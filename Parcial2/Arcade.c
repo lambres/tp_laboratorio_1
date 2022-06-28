@@ -362,14 +362,14 @@ int Arcade_mayor(void* item1,void* item2)
 	int retorno = 0;
 	Arcade* primero;
 	Arcade* segundo;
-	char valor1[LEN_NACIONALIDAD];
-	char valor2[LEN_NACIONALIDAD];
+	int valor1;
+	int valor2;
 	primero = (Arcade*) item1;
 	segundo = (Arcade*) item2;
-	if(!Arcade_getNacionalidad(primero, valor1) &&
-		!Arcade_getNacionalidad(segundo, valor2))
+	if(!Arcade_getArcade_Id(primero, &valor1) &&
+		!Arcade_getArcade_Id(segundo, &valor2))
 	{
-		if(strncmp(valor1,valor2,LEN_NACIONALIDAD)>0)
+		if(valor1>valor2)
 		{
 			retorno = -1;
 		}
