@@ -254,7 +254,6 @@ int controller_mostrarArcadeParaEliminar(LinkedList* listaSalon, LinkedList* lis
 	int retorno = -1;
 	int i,j,k;
 	char auxNombreJuego[LEN_NOMBREJUEGO];
-	char auxNombreSalon[LEN_NOMBRE];
 	char auxGenero[LEN_GENERO];
 	int genero;
 	int auxSalon_id;
@@ -273,29 +272,28 @@ int controller_mostrarArcadeParaEliminar(LinkedList* listaSalon, LinkedList* lis
 		{
 			pSalon  = ll_get(listaSalon,j);
 			Salon_getSalon_Id(pSalon, &auxSalon_id);
-			Arcade_getArcade_Id(pArcade, &auxfkIdSalon);
-			//if(pArcade->fkIdSalon == pSalon->Salon_id)
+			Arcade_getfkIdSalon(pArcade, &auxfkIdSalon);
 			if(auxfkIdSalon == auxSalon_id)
 			{
 				Salon_getSalon_Nombre(pSalon, auxSalon_nombre);
-				strncpy(auxNombreSalon,auxSalon_nombre,LEN_NOMBRE);
+				break;
 			}
 		}
 		for (k=0;k<ll_len(listaJuego);k++)
 		{
 			pJuego = ll_get(listaJuego,k);
-			Arcade_getArcade_Id(pArcade, &auxfkidJuego);
+			Arcade_getfkIdJuego(pArcade, &auxfkidJuego);
 			Juego_getJuego_Id(pJuego, &auxjuegoId);
-			//if(pJuego->juegoId == pArcade->fkidJuego)
 			if(auxjuegoId == auxfkidJuego)
 			{
-				strncpy(auxNombreJuego,pJuego->juegoNombre,LEN_NOMBREJUEGO);
-				genero = pArcade->fkidJuego;
+				Juego_getJuegoNombre(pJuego, auxNombreJuego);
+				Juego_getJuegoGenero(pJuego, &genero);
 				juego_obtenerValorGenero(genero, auxGenero);
+				break;
 			}
 		}
 		printf("| %-5d | %-5d | %-20s | %-20s | %-15s |\n",pArcade->Arcade_id,pArcade->Arcade_cantJugadores,
-				auxNombreJuego, auxNombreSalon, auxGenero);
+			auxNombreJuego, auxSalon_nombre, auxGenero);
 		retorno = 0;
 	}
 	return retorno;
