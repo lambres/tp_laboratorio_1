@@ -24,5 +24,7 @@ int controller_removeArcade(LinkedList* pListaSalon, LinkedList* pListaArcade, L
 
 int controller_ListJuegos(LinkedList* pListaJuegos);
 int controller_addJuego(LinkedList* pJuego, int idNuevo);
+
 int controller_sortArcade(LinkedList* pListaArcade);
+int controller_sortJuego(LinkedList* pListaJuego);
 

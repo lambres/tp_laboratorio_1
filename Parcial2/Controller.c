@@ -242,7 +242,13 @@ int controller_saveFiles(LinkedList* listaSalon, LinkedList* listaArcade , Linke
 	return retorno;
 }
 
-
+/// @fn int controller_mostrarArcadeParaEliminar(LinkedList*, LinkedList*, LinkedList*)
+/// @brief Funcion para mostrar los datos antes de eliminar
+///
+/// @param listaSalon puntero a LinkedList
+/// @param listaArcade puntero a LinkedList
+/// @param listaJuego puntero a LinkedList
+/// @return 0 si se pudo regresar el conjunto de registros (EXITO) y -1 si no se pudo (ERROR)
 int controller_mostrarArcadeParaEliminar(LinkedList* listaSalon, LinkedList* listaArcade, LinkedList* listaJuego)
 {
 	int retorno = -1;
@@ -283,6 +289,12 @@ int controller_mostrarArcadeParaEliminar(LinkedList* listaSalon, LinkedList* lis
 	return retorno;
 }
 
+/// @fn int controller_mostrarArcadeJuego(LinkedList*, LinkedList*)
+/// @brief Funcion para mostrar los Arcade llamada desde el menu ABM ARCADE
+///
+/// @param listaArcade
+/// @param listaJuego
+/// @return 0 Si se pudo listar (EXITO y -1 si hubo un error (ERROR)
 int controller_mostrarArcadeJuego(LinkedList* listaArcade, LinkedList* listaJuego)
 {
 	int retorno = -1;
@@ -294,9 +306,7 @@ int controller_mostrarArcadeJuego(LinkedList* listaArcade, LinkedList* listaJueg
 	int auxTipoSonido;
 	Arcade* pArcade = NULL;
 	Juego* pJuego = NULL;
-
 	printf("|%-5s|%-30s|%-12s|%-15s|%-10s|%-20s|%-10s|\n","ID","NACIONALIDAD","TIPO SONIDO","CANT JUGADORES","CAPACIDAD","JUEGO","GENERO");
-
 	for (i=0; i<ll_len(listaArcade);i++)
 	{
 		pArcade = ll_get(listaArcade, i);
@@ -319,26 +329,16 @@ int controller_mostrarArcadeJuego(LinkedList* listaArcade, LinkedList* listaJueg
 	return retorno;
 }
 
-
-
-/** \brief Alta de Salon
- *
- * \param path char*
- * \param pSalon LinkedList*
- * \return int -1 Si no se pudo dar de alta el Salon (ERROR)
- *			0 si salio todo correcto (EXITO)
- */
-/// @fn int controller_removePassenger(LinkedList*)
-/// @brief Elimina Salon
+/// @fn int controller_removeSalon(LinkedList*, LinkedList*)
+/// @brief Elimina un salon y los arcades relacionados
 ///
-/// @param pListaSalon puntero a lista Salon
-/// @return
+/// @param pListaSalon
+/// @param pListaArcade
+/// @return 0 si se pudo (EXITO) y 1 si no se pudo (ERROR)
 int controller_removeSalon(LinkedList* pListaSalon, LinkedList* pListaArcade)
 {
 	int retorno = 1;
 	int auxId;
-	//int auxIndiceSalon;
-	//int auxIndiceArcade;
 	int i,j;
 	char respuesta;
 	Salon* thisSalon = NULL;
@@ -365,12 +365,10 @@ int controller_removeSalon(LinkedList* pListaSalon, LinkedList* pListaArcade)
 								{
 									if(thisArcade->fkIdSalon == auxId)
 									{
-										//auxIndiceArcade = ll_indexOf(pListaArcade, &j);
 										ll_remove(pListaArcade, j);
 									}
 								}
 							}
-							//auxIndiceSalon = ll_indexOf(pListaSalon,&i);
 							ll_remove(pListaSalon, i);
 							retorno = 0;
 						}
@@ -382,6 +380,13 @@ int controller_removeSalon(LinkedList* pListaSalon, LinkedList* pListaArcade)
 	return retorno;
 }
 
+/// @fn int controller_removeArcade(LinkedList*, LinkedList*, LinkedList*)
+/// @brief elimina un Arcade y los juegos asignados
+///
+/// @param pListaSalon
+/// @param pListaArcade
+/// @param pListaJuegos
+/// @return 0 si se pudo eliminar (EXITO) y 1 si no se pudo (ERROR)
 int controller_removeArcade(LinkedList* pListaSalon, LinkedList* pListaArcade, LinkedList* pListaJuegos)
 {
 	int retorno = 1;
@@ -412,12 +417,10 @@ int controller_removeArcade(LinkedList* pListaSalon, LinkedList* pListaArcade, L
 								{
 									if(thisJuego->juegoId == auxId)
 									{
-										//auxIndiceArcade = ll_indexOf(pListaArcade, &j);
 										ll_remove(pListaJuegos, j);
 									}
 								}
 							}
-							//auxIndiceSalon = ll_indexOf(pListaSalon,&i);
 							ll_remove(pListaArcade, i);
 							retorno = 0;
 						}
@@ -453,12 +456,11 @@ int controller_ListSalones(LinkedList* pListaSalon)
 	return retorno;
 }
 
-
-/// @fn int controller_ListSalones(LinkedList*)
-/// @brief Lista los salones pasados como parametro en la lista
+/// @fn int controller_ListArcades(LinkedList*)
+/// @briefLista Arcades
 ///
-/// @param pListaSalon puntero a la lista de salones
-/// @return 1 si hay error en parametros (ERROR) 0 si se pudo listar (EXITO)
+/// @param pListaArcade
+/// @return 0 si se pudo listar (EXITO) y -1 si no se pudo (ERROR)
 int controller_ListArcades(LinkedList* pListaArcade)
 {
 	int retorno = 1;
@@ -478,10 +480,10 @@ int controller_ListArcades(LinkedList* pListaArcade)
 	return retorno;
 }
 
-/// @fn int controller_ListSalones(LinkedList*)
-/// @brief Lista los salones pasados como parametro en la lista
+/// @fn int controller_ListJuegos(LinkedList*)
+/// @brief Lista los juegos pasados como parametro en la lista
 ///
-/// @param pListaSalon puntero a la lista de salones
+/// @param pListaJuegos puntero a la lista de juegos
 /// @return 1 si hay error en parametros (ERROR) 0 si se pudo listar (EXITO)
 int controller_ListJuegos(LinkedList* pListaJuegos)
 {
@@ -491,7 +493,6 @@ int controller_ListJuegos(LinkedList* pListaJuegos)
 	if (pListaJuegos != NULL)
 	{
 		int cantidad = ll_len(pListaJuegos);
-		//idJuego,juegoNombre,juegoEmpresa,juegoGenero
 		printf("|%-5s|%-30s|%-30s|%-15s|\n","ID", "NOMBRE JUEGO","EMPRESA","GENERO");
 		for (i=0; i< cantidad; i++)
 		{
@@ -502,10 +503,6 @@ int controller_ListJuegos(LinkedList* pListaJuegos)
 	}
 	return retorno;
 }
-
-
-
-//------------------------ARCADES-------------------------------------
 
 
 /** \brief Alta de Salon
@@ -556,6 +553,14 @@ int controller_addSalon(LinkedList* pSalon, int idNuevo)
     return retorno;
 }
 
+/// @fn int controller_addArcade(LinkedList*, LinkedList*, LinkedList*, int)
+/// @brief Agrega Arcade
+///
+/// @param pSalon
+/// @param pArcade
+/// @param pJuego
+/// @param idNuevo nuevo id
+/// @return 0 si dio ok (EXITO) y -1 si no se pudo (ERROR)
 int controller_addArcade(LinkedList* pSalon, LinkedList* pArcade, LinkedList* pJuego, int idNuevo)
 {
 	int retorno = -1;
@@ -641,7 +646,12 @@ int controller_addArcade(LinkedList* pSalon, LinkedList* pArcade, LinkedList* pJ
 	}
 	return retorno;
 }
-
+/// @fn int controller_addJuego(LinkedList*, int)
+/// @brief Agrega elemento a la lista pJuego
+///
+/// @param pJuego
+/// @param idNuevo
+/// @return 0 si se pudo (EXITO) y -1 si no se pudo (ERROR)
 int controller_addJuego(LinkedList* pJuego, int idNuevo)
 {
 	int retorno = -1;
@@ -805,5 +815,19 @@ int controller_sortArcade(LinkedList* pListaArcade)
 	}
     return retorno;
 }
-
+/// @fn int controller_sortJuego(LinkedList*)
+/// @brief  Ordena lista juego
+///
+/// @param pListaJuego
+/// @return 0 si se pudo ordenar (EXITO) y -1 si no se pudo (ERROR)
+int controller_sortJuego(LinkedList* pListaJuego)
+{
+	int retorno = -1;
+	if(pListaJuego != NULL)
+	{
+		ll_sort(pListaJuego, Juego_mayor, 0);
+		retorno = 0;
+	}
+    return retorno;
+}
 

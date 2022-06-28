@@ -7,12 +7,25 @@
 
 #include "LinkedList.h"
 #include "Arcade.h"
-
+/// @fn Arcade Arcade_new*()
+/// @brief Crea un espacio de memoria para alojar un nuevo elemento
+///
+/// @return Retorna el espacio de memoria reservado
 Arcade* Arcade_new()
 {
 	return (Arcade*) malloc(sizeof(Arcade));
 }
-
+/// @fn Arcade Arcade_newParametros*(char*, char*, char*, char*, char*, char*, char*)
+/// @brief Define los campos y los guarda en el espacio de memoria solicitado
+///
+/// @param idArcadeStr
+/// @param nacionalidadStr
+/// @param tipoSonidoStr
+/// @param cantJugadoresStr
+/// @param capacidadStr
+/// @param fkidSalonStr
+/// @param fkidJuegoStr
+/// @return retorna el puntero con los datos del elemento tomados recibidos como parametro
 Arcade* Arcade_newParametros(char* idArcadeStr,char* nacionalidadStr ,char* tipoSonidoStr, char* cantJugadoresStr,
 							 char* capacidadStr, char* fkidSalonStr, char* fkidJuegoStr)
 {
@@ -34,6 +47,10 @@ Arcade* Arcade_newParametros(char* idArcadeStr,char* nacionalidadStr ,char* tipo
 	return this;
 }
 
+/// @fn void Arcade_delete(Arcade*)
+/// @brief Borra el elemento y libera el espacio de memoria
+///
+/// @param this elemento a ser eliminado
 void Arcade_delete(Arcade* this)
 {
 	if(this != NULL)
@@ -41,7 +58,12 @@ void Arcade_delete(Arcade* this)
 		free (this);
 	}
 }
-
+/// @fn int Arcade_setArcade_Id(Arcade*, int)
+/// @brief setea el campo id en formato int
+///
+/// @param this elemento a asignar el valor del campo
+/// @param id valor a asignar
+/// @return 0 si se pudo asignar (EXITO) -1 si no se pudo (ERROR)
 int Arcade_setArcade_Id(Arcade* this,int id)
 {
 	int retorno = -1;
@@ -52,7 +74,12 @@ int Arcade_setArcade_Id(Arcade* this,int id)
 	}
 	return retorno;
 }
-
+/// @fn int Arcade_getArcade_Id(Arcade*, int*)
+/// @brief obtiene el id del elemento
+///
+/// @param this elemento para poder obtener el campo
+/// @param id campo a obtener el valor retornado como puntero
+/// @return 0 si se pudo obtener el valor (EXITO) -1 si (ERROR)
 int Arcade_getArcade_Id(Arcade* this,int* id)
 {
 	int retorno = -1;
@@ -64,6 +91,12 @@ int Arcade_getArcade_Id(Arcade* this,int* id)
 	return retorno;
 }
 
+/// @fn int Arcade_setIdTxt(Arcade*, char*)
+/// @brief  setea el campo id en formato str
+///
+/// @param this elemento
+/// @param id campo a asignar el valor recibido como parametro
+/// @return 0 si se  pudo asignar (EXITO) -1 si no se pudo (ERROR)
 int Arcade_setIdTxt(Arcade* this,char* id)
 {
 	int retorno = -1;
@@ -77,7 +110,12 @@ int Arcade_setIdTxt(Arcade* this,char* id)
 	}
 	return retorno;
 }
-
+/// @fn int Arcade_getIdTxt(Arcade*, char*)
+/// @brief obtiene el id del elemento
+///
+/// @param this elemento para poder obtener el campo
+/// @param id campo a obtener el valor retornado como puntero en format str
+/// @return 0 si se pudo obtener el valor (EXITO) -1 si (ERROR)
 int Arcade_getIdTxt(Arcade* this,char* id)
 {
 	int retorno = -1;
@@ -88,6 +126,7 @@ int Arcade_getIdTxt(Arcade* this,char* id)
 	}
 	return retorno;
 }
+
 
 int Arcade_setTipoSonidoTxt(Arcade* this,char* tipoSonido)
 {
@@ -307,7 +346,11 @@ int Arcade_getTipoSonido(Arcade* this,int* tipoSonido)
 }
 
 
-
+/// @fn int Arcade_printOne(Arcade*)
+/// @brief funcion que imprime un solo registro de arcade recibido como elemento
+///
+/// @param pArcade elemento a ser impreso
+/// @return 0 si se pudo imprimir (EXITO) -1 si no se pudo (ERROR)
 
 int Arcade_printOne(Arcade* pArcade)
 {
@@ -319,14 +362,18 @@ int Arcade_printOne(Arcade* pArcade)
 		auxTipoSonido = pArcade->Arcade_tipoSonido;
 		if(!arcade_obtenerValorTipoSonido(auxTipoSonido, tipoSonido))
 		{
-			//,"ID","NACIONALIDAD","TIPO SONIDO","CANT JUGADORES","CAPACIDAD","ID SALON","ID JUEGO");
 			printf("|%-5d|%-30s|%-12s|%-15d|%-10d|%-10d|\n",pArcade->Arcade_id, pArcade->Arcade_nacionaliad,
 					tipoSonido, pArcade->Arcade_cantJugadores, pArcade->Arcade_capacidad, pArcade->fkidJuego);
 		}
 	}
 	return retorno;
 }
-
+/// @fn int Arcade_printOneFile(FILE*, Arcade*)
+/// @brief Funcion que imprime en un archivo de texto los valores del elemento recibido como parametro
+///
+/// @param archivo nombre del archivo a ser impreso o guardado
+/// @param pSalon elemento a ser impreso o guardado
+/// @return 0 si se pudo imprimir (EXITO) y -1 si no se pudo (ERROR)
 int Arcade_printOneFile(FILE* archivo, Arcade* pSalon)
 {
 	int retorno = -1;
@@ -347,7 +394,6 @@ int Arcade_printOneFile(FILE* archivo, Arcade* pSalon)
 			!(Arcade_getfkIdSalon(pSalon, &auxfkIdSalon)) &&
 			!(Arcade_getfkIdJuego(pSalon, &auxfkIdJuego)))
 		{
-			//Arcade_id,Arcade_nacionalidad,Arcade_tipoSonido,Arcade_cantJugadores,Arcade_capacidad,fkIdSalon,fkIdJuego
 			fprintf(archivo,"%d,%s,%s,%d,%d,%d,%d\n",auxId, auxNacionalidad,auxTipoSonido,auxCantJugadores,auxCapacidad,auxfkIdSalon,auxfkIdJuego);
 		}
 		retorno = 0;
@@ -355,7 +401,12 @@ int Arcade_printOneFile(FILE* archivo, Arcade* pSalon)
 	return retorno;
 }
 
-
+/// @fn int Arcade_mayor(void*, void*)
+/// @brief compara dos elementos pasados como parametros
+///
+/// @param item1 elemento 1 a comparar
+/// @param item2 elemento 2 a comparar
+/// @return 0 si son los elementos iguales, -1 si valor 1 es mayor a valor 2 y 1 en caso contrario
 
 int Arcade_mayor(void* item1,void* item2)
 {
@@ -381,6 +432,13 @@ int Arcade_mayor(void* item1,void* item2)
 	return retorno;
 }
 
+
+/// @fn int arcade_obtenerValorTipoSonido(int, char*)
+/// @brief funcion que convierte el parametro recibido como entero en estring convertido
+/// si es 0 devuelvo ESTEREO y si recibo 1 devuelvo MONO
+/// @param tipoInt valor entero a convertir
+/// @param tipoStr valor a devolver en formato cadena
+/// @return
 int arcade_obtenerValorTipoSonido(int tipoInt, char* tipoStr)
 {
 	int retorno = -1;
@@ -400,19 +458,3 @@ int arcade_obtenerValorTipoSonido(int tipoInt, char* tipoStr)
 	return retorno;
 }
 
-int Salon_validateTipoSonido(char* tipoSonidoStr)
-{
-	int retorno = -1;
-	if(strncmp(tipoSonidoStr,"STEREO",LEN_TIPOSONIDO)==0)
-			{
-				retorno = STEREO;
-			}
-			else
-			{
-				if(strncmp(tipoSonidoStr,"MONO",LEN_TIPOSONIDO)==0)
-				{
-					retorno = MONO;
-				}
-			}
-	return retorno;
-}

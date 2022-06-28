@@ -413,18 +413,43 @@ int ReporteG(LinkedList* listaArcade, LinkedList* listaJuegos)
 {
 	int retorno = -1;
 	int i,j;
-	int contadorArcades=0;
-	int mayorCantidad=0;
-	int primero = 0;
-	int imprimir = 0;
-	Salon* pSalon = NULL;
+	int cantidadRegistros=0;
+	int genero;
+	char auxGenero[LEN_GENERO];
 	Arcade* pArcade = NULL;
-	Salon* auxMayor=NULL;
+	Juego* pJuego=NULL;
 	if(listaArcade != NULL && listaJuegos != NULL)
 	{
-
+		controller_sortJuego(listaJuegos);
+		printf("7.\tListar los arcades que cumplan con sonido MONO y el genero de su juego sea \n"
+				"\tPLATAFORMA, informando nombre de juego, genero y cantidad de jugadores que \n"
+				"\tsoporta el arcade. El listado debera estar ordenado por nombre de juego.\n\n");
+		printf("|%-15s|%-30s|%-20s|%-20s|\n","ID ARCADE","NOMBRE JUEGO","GENERO","CANTIDAD JUGADORES");
+		for (i=0; i<ll_len(listaJuegos);i++)
+		{
+			pJuego = ll_get(listaJuegos, i);
+			for(j=0;j<ll_len(listaArcade);j++)
+			{
+				pArcade  = ll_get(listaArcade,j);
+				if(pArcade->fkidJuego == pJuego->juegoId)
+				{
+					if(pArcade->Arcade_tipoSonido== MONO && pJuego->juegoGenero == PLATAFORMA)
+					{
+						{
+							genero = pJuego->juegoGenero;
+							juego_obtenerValorGenero(genero, auxGenero);
+							printf("|%-15d|%-30s|%-20s|%-20d|\n",pArcade->Arcade_id,pJuego->juegoNombre,auxGenero,pArcade->Arcade_cantJugadores);
+							cantidadRegistros++;
+						}
+					}
+				}
+			}
+		}
+		printf("Cantidad de Arcades: %d: \n ", cantidadRegistros);
+		retorno = 0;
 	}
 	return retorno;
+
 }
 
 

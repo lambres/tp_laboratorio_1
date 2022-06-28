@@ -19,10 +19,7 @@ int main()
 {
 	setbuf(stdout,NULL);
     int option = 0;
-    //int auxIndiceSalon;
-    //int auxIndiceArcade;
-    //int auxIndiceJuego;
-
+    //creo las 3 listas para trabajar en la aplicacion
     LinkedList* listaSalon = ll_newLinkedList();
     LinkedList* listaArcade = ll_newLinkedList();
     LinkedList* listaJuego = ll_newLinkedList();
