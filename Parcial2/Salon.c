@@ -176,7 +176,7 @@ int Salon_printOneSalon(Salon* pSalon)
 		int auxId;
 		if (pSalon != NULL)
 		{
-			auxId = pSalon->Salon_tipo;
+			Salon_getTipoSalon(pSalon, &auxId);
 			if(!salon_obtenerValorTipo(auxId, tipoSalon))
 			{
 				printf("|%-5d|%-30s|%-30s|%-15s|\n",pSalon->Salon_id, pSalon->Salon_nombre,pSalon->Salon_direccion,tipoSalon);

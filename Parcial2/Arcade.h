@@ -67,6 +67,7 @@ int Arcade_getTipoSonido(Arcade* this,int* tipoSonido);
 
 int Arcade_setTipoSonidoTxt(Arcade* this,char* tipoSonido);
 int Arcade_getTipoSonidoTxt(Arcade* this,char* tipoSonido);
+int Arcade_getfkIdJuego(Arcade* this,int* fkIdJuego);
 
 
 int Arcade_printOne(Arcade* pSalon);

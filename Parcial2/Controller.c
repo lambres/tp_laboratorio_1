@@ -257,6 +257,11 @@ int controller_mostrarArcadeParaEliminar(LinkedList* listaSalon, LinkedList* lis
 	char auxNombreSalon[LEN_NOMBRE];
 	char auxGenero[LEN_GENERO];
 	int genero;
+	int auxSalon_id;
+	int auxfkIdSalon;
+	char auxSalon_nombre[LEN_NOMBRE];
+	int auxjuegoId;
+	int auxfkidJuego;
 	Arcade* pArcade = NULL;
 	Salon* pSalon = NULL;
 	Juego* pJuego = NULL;
@@ -267,15 +272,22 @@ int controller_mostrarArcadeParaEliminar(LinkedList* listaSalon, LinkedList* lis
 		for(j=0;j<ll_len(listaSalon);j++)
 		{
 			pSalon  = ll_get(listaSalon,j);
-			if(pArcade->fkIdSalon == pSalon->Salon_id)
+			Salon_getSalon_Id(pSalon, &auxSalon_id);
+			Arcade_getArcade_Id(pArcade, &auxfkIdSalon);
+			//if(pArcade->fkIdSalon == pSalon->Salon_id)
+			if(auxfkIdSalon == auxSalon_id)
 			{
-				strncpy(auxNombreSalon,pSalon->Salon_nombre,LEN_NOMBRE);
+				Salon_getSalon_Nombre(pSalon, auxSalon_nombre);
+				strncpy(auxNombreSalon,auxSalon_nombre,LEN_NOMBRE);
 			}
 		}
 		for (k=0;k<ll_len(listaJuego);k++)
 		{
 			pJuego = ll_get(listaJuego,k);
-			if(pJuego->juegoId == pArcade->fkidJuego)
+			Arcade_getArcade_Id(pArcade, &auxfkidJuego);
+			Juego_getJuego_Id(pJuego, &auxjuegoId);
+			//if(pJuego->juegoId == pArcade->fkidJuego)
+			if(auxjuegoId == auxfkidJuego)
 			{
 				strncpy(auxNombreJuego,pJuego->juegoNombre,LEN_NOMBREJUEGO);
 				genero = pArcade->fkidJuego;
@@ -301,9 +313,14 @@ int controller_mostrarArcadeJuego(LinkedList* listaArcade, LinkedList* listaJueg
 	int i,j;
 	char auxNombreJuego[LEN_NOMBREJUEGO];
 	char auxGenero[LEN_GENERO];
-	int genero;
+
 	char tipoSonido[LEN_TIPOSONIDO];
-	int auxTipoSonido;
+	int auxjuegoId;
+	int auxfkidJuego;
+	char auxjuegoNombre[LEN_NOMBREJUEGO];
+	int auxJuegoGenero;
+	int auxArcade_tipoSonido;
+
 	Arcade* pArcade = NULL;
 	Juego* pJuego = NULL;
 	printf("|%-5s|%-30s|%-12s|%-15s|%-10s|%-20s|%-10s|\n","ID","NACIONALIDAD","TIPO SONIDO","CANT JUGADORES","CAPACIDAD","JUEGO","GENERO");
@@ -313,15 +330,21 @@ int controller_mostrarArcadeJuego(LinkedList* listaArcade, LinkedList* listaJueg
 		for (j=0;j<ll_len(listaJuego);j++)
 		{
 			pJuego = ll_get(listaJuego,j);
-			if(pJuego->juegoId == pArcade->fkidJuego)
+			Juego_getJuego_Id(pJuego, &auxjuegoId);
+			Arcade_getfkIdJuego(pArcade, &auxfkidJuego);
+			//if(pJuego->juegoId == pArcade->fkidJuego)
+			if(auxjuegoId == auxfkidJuego)
 			{
-				strncpy(auxNombreJuego,pJuego->juegoNombre,LEN_NOMBREJUEGO);
-				genero = pJuego->juegoGenero;
-				juego_obtenerValorGenero(genero, auxGenero);
+				Juego_getJuegoNombre(pJuego, auxjuegoNombre);
+				strncpy(auxNombreJuego,auxjuegoNombre,LEN_NOMBREJUEGO);
+				Juego_getJuegoGenero(pJuego, &auxJuegoGenero);
+				//genero = pJuego->juegoGenero;
+				juego_obtenerValorGenero(auxJuegoGenero, auxGenero);
 			}
 		}
-		auxTipoSonido = pArcade->Arcade_tipoSonido;
-		if(arcade_obtenerValorTipoSonido(auxTipoSonido, tipoSonido)!=-1)
+		Arcade_getTipoSonido(pArcade, &auxArcade_tipoSonido);
+		//auxTipoSonido = pArcade->Arcade_tipoSonido;
+		if(arcade_obtenerValorTipoSonido(auxArcade_tipoSonido, tipoSonido)!=-1)
 		printf("|%-5d|%-30s|%-12s|%-15d|%-10d|%-20s|%-10s|\n",pArcade->Arcade_id,pArcade->Arcade_nacionaliad,tipoSonido,
 				pArcade->Arcade_cantJugadores,pArcade->Arcade_capacidad,auxNombreJuego, auxGenero);
 		retorno = 0;
@@ -343,6 +366,9 @@ int controller_removeSalon(LinkedList* pListaSalon, LinkedList* pListaArcade)
 	char respuesta;
 	Salon* thisSalon = NULL;
 	Arcade* thisArcade = NULL;
+	int auxfkIdSalon;
+
+	int auxSalon_id;
 	if (pListaSalon != NULL && pListaArcade != NULL)
 	{
 		controller_ListSalones(pListaSalon);
@@ -353,7 +379,8 @@ int controller_removeSalon(LinkedList* pListaSalon, LinkedList* pListaArcade)
 				thisSalon = ll_get(pListaSalon, i);
 				if(thisSalon!= NULL)
 				{
-					if(thisSalon->Salon_id == auxId)
+					Salon_getSalon_Id(thisSalon, &auxSalon_id);
+					if(auxSalon_id == auxId)
 					{
 						respuesta = verifica();
 						if(respuesta=='S')
@@ -363,7 +390,8 @@ int controller_removeSalon(LinkedList* pListaSalon, LinkedList* pListaArcade)
 								thisArcade=ll_get(pListaArcade,j);
 								if(thisArcade!=NULL)
 								{
-									if(thisArcade->fkIdSalon == auxId)
+									Arcade_getfkIdSalon(thisArcade, &auxfkIdSalon);
+									if(auxfkIdSalon == auxId)
 									{
 										ll_remove(pListaArcade, j);
 									}
@@ -395,6 +423,10 @@ int controller_removeArcade(LinkedList* pListaSalon, LinkedList* pListaArcade, L
 	char respuesta;
 	Arcade* thisArcade = NULL;
 	Juego* thisJuego = NULL;
+
+
+	int auxArcade_id;
+	int auxjuegoId;
 	if (pListaSalon != NULL && pListaArcade != NULL && pListaJuegos != NULL)
 	{
 		controller_mostrarArcadeParaEliminar(pListaSalon, pListaArcade, pListaJuegos);
@@ -405,7 +437,8 @@ int controller_removeArcade(LinkedList* pListaSalon, LinkedList* pListaArcade, L
 				thisArcade = ll_get(pListaArcade, i);
 				if(thisArcade!= NULL)
 				{
-					if(thisArcade->Arcade_id == auxId)
+					Arcade_getArcade_Id(thisArcade, &auxArcade_id);
+					if(auxArcade_id == auxId)
 					{
 						respuesta = verifica();
 						if(respuesta=='S')
@@ -415,7 +448,8 @@ int controller_removeArcade(LinkedList* pListaSalon, LinkedList* pListaArcade, L
 								thisJuego=ll_get(pListaJuegos,j);
 								if(thisJuego!=NULL)
 								{
-									if(thisJuego->juegoId == auxId)
+									Juego_getJuego_Id(thisJuego, &auxjuegoId);
+									if(auxjuegoId == auxId)
 									{
 										ll_remove(pListaJuegos, j);
 									}
@@ -575,6 +609,9 @@ int controller_addArcade(LinkedList* pSalon, LinkedList* pArcade, LinkedList* pJ
 	int auxIdJuego;
 	Salon* auxSalon = NULL;
 	Juego* auxJuego = NULL;
+
+	int auxSalon_id;
+	int auxjuegoId;
 	if(pSalon != NULL && pArcade != NULL && pJuego != NULL && idNuevo >=0)
 	{
 		if (aux!=NULL)
@@ -601,7 +638,8 @@ int controller_addArcade(LinkedList* pSalon, LinkedList* pArcade, LinkedList* pJ
 						auxSalon = ll_get(pSalon, i);
 						if(auxSalon!= NULL)
 						{
-							if(auxSalon->Salon_id == auxIdSalon)
+							Salon_getSalon_Id(auxSalon, &auxSalon_id);
+							if(auxSalon_id == auxIdSalon)
 							{
 								Arcade_setfkIdSalon(aux, auxIdSalon);
 								break;
@@ -621,7 +659,8 @@ int controller_addArcade(LinkedList* pSalon, LinkedList* pArcade, LinkedList* pJ
 						auxJuego = ll_get(pJuego, i);
 						if(auxJuego!= NULL)
 						{
-							if(auxJuego->juegoId == auxIdJuego)
+							Juego_getJuego_Id(auxJuego, &auxjuegoId);
+							if(auxjuegoId == auxIdJuego)
 							{
 								Arcade_setfkIdJuego(aux, auxIdJuego);
 								break;
@@ -776,7 +815,9 @@ int controller_editArcade(LinkedList* listaArcade, LinkedList* listaJuegos)
 									thisJuego = ll_get(listaJuegos,j);
 									if(thisJuego!=NULL)
 									{
-										if(thisJuego->juegoId==auxJuego)
+										int auxjuegoId;
+										Juego_getJuego_Id(thisJuego, &auxjuegoId);
+										if(auxjuegoId==auxJuego)
 										{
 											if(Arcade_setfkIdJuego(this, auxJuego)==-1)
 											{

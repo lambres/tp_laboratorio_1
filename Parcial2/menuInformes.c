@@ -95,6 +95,9 @@ int ReporteA(LinkedList* listaSalon, LinkedList* listaArcade)
 	int imprimir = 0;
 	Salon* pSalon = NULL;
 	Arcade* pArcade = NULL;
+
+	int auxfkIdSalon;
+	int auxSalon_id;
 	if(listaSalon != NULL && listaArcade != NULL)
 	{
 		printf("\n1.\tListar los salones con mas de 4 arcade. Indicando ID de salon, nombre,\n "
@@ -106,7 +109,9 @@ int ReporteA(LinkedList* listaSalon, LinkedList* listaArcade)
 			for(j=0;j<ll_len(listaArcade);j++)
 			{
 				pArcade  = ll_get(listaArcade,j);
-				if(pArcade->fkIdSalon == pSalon->Salon_id)
+				Arcade_getfkIdSalon(pArcade, &auxfkIdSalon);
+				Salon_getSalon_Id(pSalon, &auxSalon_id);
+				if(auxfkIdSalon == auxSalon_id)
 				{
 					contadorArcades++;
 				}
@@ -139,10 +144,15 @@ int ReporteB(LinkedList* listaSalon, LinkedList* listaArcade, LinkedList* listaJ
 	char auxNombreJuego[LEN_NOMBREJUEGO];
 	char auxNombreSalon[LEN_NOMBRE];
 	char auxGenero[LEN_GENERO];
-	int genero;
 	Arcade* pArcade = NULL;
 	Salon* pSalon = NULL;
 	Juego* pJuego = NULL;
+
+	int auxArcade_cantJugadores;
+	int auxfkIdSalon;
+	int auxSalon_id;
+	int auxjuegoId;
+	int auxfkidJuego;
 	if(listaSalon != NULL && listaSalon != NULL && listaSalon != NULL)
 	{
 		printf("2.\tListar los arcade para mas de 2 jugadores, indicando ID de arcade, \n"
@@ -151,24 +161,28 @@ int ReporteB(LinkedList* listaSalon, LinkedList* listaArcade, LinkedList* listaJ
 		for (i=0; i<ll_len(listaArcade);i++)
 		{
 			pArcade = ll_get(listaArcade, i);
-			if(pArcade->Arcade_cantJugadores >= 2)
+			Arcade_getCantJugadores(pArcade, &auxArcade_cantJugadores);
+			if(auxArcade_cantJugadores >= 2)
 			{
 				for(j=0;j<ll_len(listaSalon);j++)
 				{
 					pSalon  = ll_get(listaSalon,j);
-					if(pArcade->fkIdSalon == pSalon->Salon_id)
+					Arcade_getfkIdSalon(pArcade, &auxfkIdSalon);
+					Salon_getSalon_Id(pSalon, &auxSalon_id);
+					if(auxfkIdSalon == auxSalon_id)
 					{
-						strncpy(auxNombreSalon,pSalon->Salon_nombre,LEN_NOMBRE);
+						Salon_getSalon_Nombre(pSalon, auxNombreSalon);
 					}
 				}
 				for (k=0;k<ll_len(listaJuego);k++)
 				{
 					pJuego = ll_get(listaJuego,k);
-					if(pJuego->juegoId == pArcade->fkidJuego)
+					Juego_getJuego_Id(pJuego, &auxjuegoId);
+					Arcade_getfkIdJuego(pArcade, &auxfkidJuego);
+					if(auxjuegoId == auxfkidJuego)
 					{
-						strncpy(auxNombreJuego,pJuego->juegoNombre,LEN_NOMBREJUEGO);
-						genero = pArcade->fkidJuego;
-						juego_obtenerValorGenero(genero, auxGenero);
+						Juego_getJuegoNombre(pJuego, auxNombreJuego);
+						juego_obtenerValorGenero(auxfkidJuego, auxGenero);
 					}
 				}
 				printf("| %-5d | %-5d | %-20s | %-20s | %-15s |\n",pArcade->Arcade_id,pArcade->Arcade_cantJugadores,
@@ -185,6 +199,7 @@ int ReporteC(LinkedList* listaSalon)
 	int retorno = -1;
 	int auxId,i;
 	Salon* pSalon = NULL;
+	int auxSalon_id;
 	if(listaSalon != NULL)
 	{
 		printf("3.\tListar toda la informacion de un salon en especifico ingresado por el usuario.\n "
@@ -200,7 +215,8 @@ int ReporteC(LinkedList* listaSalon)
 			for (i=0; i<ll_len(listaSalon);i++)
 			{
 				pSalon = ll_get(listaSalon, i);
-				if(pSalon->Salon_id == auxId)
+				Salon_getSalon_Id(pSalon, &auxSalon_id);
+				if(auxSalon_id == auxId)
 				{
 					printf("|%-5s|%-30s|%-30s|%-15s|\n","ID", "NOMBRE","DIRECCION","TIPO SALON");
 					Salon_printOneSalon(pSalon);
@@ -219,10 +235,14 @@ int ReporteD(LinkedList* listaSalon, LinkedList* listaArcade, LinkedList* listaJ
 	int cantPlataforma=0;
 	int cantLaberinto=0;
 	int cantAventura=0;
-	int auxTipo=0;
 	Arcade* pArcade = NULL;
 	Salon* pSalon = NULL;
 	Juego* pJuego = NULL;
+	int auxfkIdSalon;
+	int auxSalon_id;
+	int auxjuegoId;
+	int auxfkidJuego;
+	int auxjuegoGenero;
 	if(listaSalon != NULL && listaSalon != NULL && listaSalon != NULL)
 	{
 		printf("4.\tUn salon se encuentra completo si posee al menos \n"
@@ -236,15 +256,19 @@ int ReporteD(LinkedList* listaSalon, LinkedList* listaArcade, LinkedList* listaJ
 			for(j=0;j<ll_len(listaArcade);j++)
 			{
 				pArcade  = ll_get(listaArcade,j);
-				if(pArcade->fkIdSalon == pSalon->Salon_id)
+				Arcade_getfkIdSalon(pArcade, &auxfkIdSalon);
+				Salon_getSalon_Id(pSalon, &auxSalon_id);
+				if(auxfkIdSalon == auxSalon_id)
 				{
 					for(k=0;k<ll_len(listaJuego);k++)
 					{
 						pJuego = ll_get(listaJuego,k);
-						if(pJuego->juegoId == pArcade->fkidJuego)
+						Juego_getJuego_Id(pJuego, &auxjuegoId);
+						Arcade_getfkIdJuego(pArcade, &auxfkidJuego);
+						if(auxjuegoId == auxfkidJuego)
 						{
-							auxTipo = pJuego->juegoGenero;
-							switch (auxTipo)
+							Juego_getJuegoGenero(pJuego, &auxjuegoGenero);
+							switch (auxjuegoGenero)
 							{
 							case PLATAFORMA:
 								cantPlataforma++;
@@ -286,12 +310,16 @@ int ReporteE(LinkedList* listaSalon, LinkedList* listaArcade, LinkedList* listaJ
 
 	int auxIdSalon;
 	int idLocalizado = -1;
-	int genero;
+	int auxjuegoGenero;
 	int auxTipoSonido;
 
 	Arcade* pArcade = NULL;
 	Salon* pSalon = NULL;
 	Juego* pJuego = NULL;
+	int auxSalon_id;
+	int auxfkIdSalon;
+	int auxjuegoId;
+	int auxfkidJuego;
 	if(listaSalon != NULL && listaSalon != NULL && listaSalon != NULL)
 	{
 		printf("5.\tListar todos los arcades de un salon determinado ingresando su ID. \n"
@@ -320,16 +348,20 @@ int ReporteE(LinkedList* listaSalon, LinkedList* listaArcade, LinkedList* listaJ
 					for(j=0;j<ll_len(listaArcade);j++)
 					{
 						pArcade = ll_get(listaArcade,j);
-						if(pArcade->fkIdSalon == pSalon->Salon_id)
+						Arcade_getfkIdSalon(pArcade, &auxfkIdSalon);
+						Salon_getSalon_Id(pSalon, &auxSalon_id);
+						if(auxfkIdSalon == auxSalon_id)
 						{
 							for(k=0;k<ll_len(listaJuego);k++)
 							{
 								pJuego = ll_get(listaJuego, k);
-								if(pJuego->juegoId == pArcade->fkidJuego)
+								Juego_getJuego_Id(pJuego, &auxjuegoId);
+								Arcade_getfkIdJuego(pArcade, &auxfkidJuego);
+								if(auxjuegoId == auxfkidJuego)
 								{
-									strncpy(auxNombreJuego,pJuego->juegoNombre,LEN_NOMBREJUEGO);
-									genero = pJuego->juegoGenero;
-									juego_obtenerValorGenero(genero, auxGenero);
+									Juego_getJuegoNombre(pJuego, auxNombreJuego);
+									Juego_getJuegoGenero(pJuego, &auxjuegoGenero);
+									juego_obtenerValorGenero(auxjuegoGenero, auxGenero);
 								}
 							}
 							auxTipoSonido = pArcade->Arcade_tipoSonido;
@@ -362,6 +394,8 @@ int ReporteF(LinkedList* listaSalon, LinkedList* listaArcade)
 	Salon* pSalon = NULL;
 	Arcade* pArcade = NULL;
 	Salon* auxMayor=NULL;
+	int auxfkIdSalon;
+	int auxSalon_id;
 	if(listaSalon != NULL && listaArcade != NULL)
 	{
 		controller_sortArcade(listaArcade);
@@ -393,7 +427,9 @@ int ReporteF(LinkedList* listaSalon, LinkedList* listaArcade)
 				for(j=0;j<ll_len(listaArcade);j++)
 				{
 					pArcade = ll_get(listaArcade,j);
-					if(pArcade->fkIdSalon==auxMayor->Salon_id)
+					Arcade_getfkIdSalon(pArcade, &auxfkIdSalon);
+					Salon_getSalon_Id(auxMayor, &auxSalon_id);
+					if(auxfkIdSalon == auxSalon_id)
 					{
 						Arcade_printOne(pArcade);
 					}
@@ -414,10 +450,13 @@ int ReporteG(LinkedList* listaArcade, LinkedList* listaJuegos)
 	int retorno = -1;
 	int i,j;
 	int cantidadRegistros=0;
-	int genero;
 	char auxGenero[LEN_GENERO];
 	Arcade* pArcade = NULL;
 	Juego* pJuego=NULL;
+	int auxfkidJuego;
+	int auxjuegoId;
+	int auxArcade_tipoSonido;
+	int auxjuegoGenero;
 	if(listaArcade != NULL && listaJuegos != NULL)
 	{
 		controller_sortJuego(listaJuegos);
@@ -431,16 +470,17 @@ int ReporteG(LinkedList* listaArcade, LinkedList* listaJuegos)
 			for(j=0;j<ll_len(listaArcade);j++)
 			{
 				pArcade  = ll_get(listaArcade,j);
-				if(pArcade->fkidJuego == pJuego->juegoId)
+				Arcade_getfkIdJuego(pArcade, &auxfkidJuego);
+				Juego_getJuego_Id(pJuego, &auxjuegoId);
+				if(auxfkidJuego == auxjuegoId)
 				{
-					if(pArcade->Arcade_tipoSonido== MONO && pJuego->juegoGenero == PLATAFORMA)
+					Arcade_getTipoSonido(pArcade, &auxArcade_tipoSonido);
+					Juego_getJuegoGenero(pJuego, &auxjuegoGenero);
+					if(auxArcade_tipoSonido== MONO && auxjuegoGenero == PLATAFORMA)
 					{
-						{
-							genero = pJuego->juegoGenero;
-							juego_obtenerValorGenero(genero, auxGenero);
-							printf("|%-15d|%-30s|%-20s|%-20d|\n",pArcade->Arcade_id,pJuego->juegoNombre,auxGenero,pArcade->Arcade_cantJugadores);
-							cantidadRegistros++;
-						}
+						juego_obtenerValorGenero(auxjuegoGenero, auxGenero);
+						printf("|%-15d|%-30s|%-20s|%-20d|\n",pArcade->Arcade_id,pJuego->juegoNombre,auxGenero,pArcade->Arcade_cantJugadores);
+						cantidadRegistros++;
 					}
 				}
 			}

@@ -177,10 +177,10 @@ int Juego_getGeneroTxt(Juego* this,char* genero)
 int Juego_printOneJuego(Juego* pJuego)
 {
 	int retorno = -1;
-	int genero;
+	int auxjuegoGenero;
 	char auxGenero[LEN_GENERO];
-	genero = pJuego->juegoGenero;
-	juego_obtenerValorGenero(genero, auxGenero);
+	Juego_getJuegoGenero(pJuego, &auxjuegoGenero);
+	juego_obtenerValorGenero(auxjuegoGenero, auxGenero);
 	if (pJuego != NULL)
 	{
 		printf("|%-5d|%-30s|%-30s|%-15s|\n",pJuego->juegoId, pJuego->juegoNombre,pJuego->juegoEmpresa, auxGenero);
